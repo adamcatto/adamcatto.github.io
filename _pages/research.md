@@ -5,10 +5,7 @@ excerpt: "Research"
 author_profile: true
 redirect_from: 
   - /research/
-  - /research.html
 ---
-
-# Research
 
 The goal of my research is to develop tools and make basic discoveries that inform and facilitate precision health/medicine. Precision medicine may be broadly defined as "the right intervention for the right patient at the right time", and perhaps more specifically as "determining the (potentially multifactorial / copmlex) etiology of an individual's disease(s) / health state, and making some intervention which best addresses that etiology". Given this description, we may consider a broad class of interventions, ranging from pharmacological to surgical to lifestyle changes. My research interests are predominantly focused on conditions in which pharmacological action is most appropriate, but I am interested in the whole spectrum of health science. Here is a list of some research areas I am most interested in:
 
