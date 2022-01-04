@@ -62,7 +62,7 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 :  # Open Graph/Twitter default site image
+og_image                 :  "liposome_illustration.jpeg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Adam Catto"
-  avatar           : "profile.png"
+  avatar           : "me.jpeg"
   bio              : "Data Science Graduate Student, CUNY Graduate Center"
   location         : "New York, NY"
   employer         : "Research Foundation of CUNY"
