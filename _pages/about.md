@@ -6,6 +6,7 @@ author_profile: true
 redirect_from: 
   - /about/
   - /about.html
+---
 
 I am a data scientist / scientific programmer in the Neuroscience Department at the Icahn School of Medicine at Mount Sinai. I work on machine learning / AI for medical imaging, molecular neurobiology, and automation of neuroscience experiments.
 
