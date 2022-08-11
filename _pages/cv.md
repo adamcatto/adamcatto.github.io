@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-[Link to PDF copy](https://github.com/adamcatto/adamcatto.github.io/blob/master/files/)
+[Link to PDF copy](https://github.com/adamcatto/adamcatto.github.io/blob/master/files/agoc-cv-2022.pdf)
 
 Education
 ======
