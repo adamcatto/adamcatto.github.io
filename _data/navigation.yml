@@ -18,8 +18,8 @@ main:
   - title: "CV"
     url: /cv/
 
-  - title: "Notebook"
-    url: /notebook/
-
   - title: "Links"
     url: /links/
+
+  - title: "Books"
+    url: /books/
