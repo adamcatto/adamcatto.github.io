@@ -15,6 +15,8 @@ redirect_from:
 
 * Resilience: The Science of Masting Life's Greatest Challenges (Steven M. Southwick and Dennis Charney)
 
+* Worldviews: An Introduction to the History and Philosophy of Science (Richard DeWitt)
+
 ## Read
 
 ### Fiction, Literature, Short Story Collections
@@ -50,6 +52,8 @@ redirect_from:
 * The Kite Runner (Khaled Hosseini)
 
 * The Inferno (Dante Alighieri)
+
+* The Epic of Gilgamesh (Anonymous)
 
 ### Biology and Medicine
 
@@ -121,6 +125,8 @@ redirect_from:
 
 * Ethics (Spinoza)
 
+* Meditations on First Philosophy (Descartes)
+
 * Five Thousand B.C. and Other Philosophical Fantasies (Raymond Smullyan)
 
 * Striking Thoughts: Bruce Lee's Wisdom for Daily Living (Bruce Lee)
@@ -151,11 +157,15 @@ redirect_from:
 
 * Our Mathematical Universe (Max Tegmark)
 
+* The Five Dialogues – Euthyphro, Apology, Crito, Meno, Phaedo (Plato)
+
 ### Engineering, Computer Science
 
 * Sensors: An Introductory  (Kourosh Kalantar-Zadeh)
 
 * The Elements of Statistical Learning (Jerome Friedman et al)
+
+  * Selected Chapters
 
 * Conceptual Wavelets in Digital Signal Processing: An In-Depth, Practical Approach for the Non-Mathematician (D. Lee Fugal)
 
@@ -168,6 +178,8 @@ redirect_from:
 * Computability: Turing, Godel, Church, and Beyond (Jack Copeland)
 
 * Deep Learning Textbook (Ian Goodfellow et al)
+
+  * Selected Chapters
 
 ### Running
 

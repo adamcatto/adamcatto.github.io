@@ -9,6 +9,8 @@ redirect_from:
 
 {% include base_path %}
 
+[Link to PDF copy](https://github.com/adamcatto/adamcatto.github.io/blob/master/files/)
+
 Education
 ======
 * B.S. in Applied Mathematics & Statistics, B.S. in Philosophy, Stony Brook University, 2019
@@ -16,7 +18,12 @@ Education
 
 Work experience
 ======
-* Aug 2020 - Present: Graduate Research Assistant
+* Jun 2022 - Present: Data Science Analyst
+  * Shen Laboratory, Department of Neuroscience
+  * Icahn School of Medicine at Mount Sinai
+  * Topics: Machine learning and AI for medical imaging, omics data analysis, and automation of behavioral experiment
+
+* Aug 2020 - Jun 2022: Graduate Research Assistant
   * Distributed Artificial Intelligence Laboratory
   * CUNY Graduate Center & Hunter College
   * Topics: Clinical Informatics, Statistical Machine Learning, Reinforcement Learning, Clinical Decision-Support AI Systems
