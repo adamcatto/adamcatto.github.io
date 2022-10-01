@@ -22,6 +22,8 @@ redirect_from:
 
   * Note: this was part of a lecture series at the Naval Postgraduate Schoolcalled "Learning to Learn". I actually recommend the [entire series](https://youtube.com/playlist?list=PL2FF649D0C4407B30)
 
+* [Steven Weinberg's Four Golden Lessons for Graduate Students / Beginning Scientists](https://www.nature.com/articles/426389a)
+
 ### Machine Learning / AI / Statistics – Advice, Courses, Vision
 
 * [Full Stack Deep Learning Course](https://fullstackdeeplearning.com), UC Berkeley
@@ -53,3 +55,4 @@ redirect_from:
 * [Deisseroth Lab](https://web.stanford.edu/group/dlab/), Stanford (PI: Karl Deisseroth)
 
 * [Synthetic Neurobiology Group](http://syntheticneurobiology.org), MIT (PI: Ed Boyden)
+
