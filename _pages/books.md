@@ -11,11 +11,16 @@ redirect_from:
 
 ## Currently Reading
 
-* Phi: A Voyage from the Brain to the Soul (Giulio Tononi)
 
-* Resilience: The Science of Masting Life's Greatest Challenges (Steven M. Southwick and Dennis Charney)
+* Prey (Michael Crichton)
 
-* Worldviews: An Introduction to the History and Philosophy of Science (Richard DeWitt)
+* Advice for a Young Investigator (Santiago Ramon y Cajal)
+
+* The Touchstone of Life (Werner Loewenstein)
+
+* Moby-Dick or, the Whale (Melville)
+
+* The Code Breaker: Jennifer Doudna, Gene Editing, and the Future of the Human Race (Isaacson)
 
 ## Read
 
@@ -232,6 +237,8 @@ redirect_from:
 * Ultralearning (Scott Young)
 
 * Nonviolent Communication (Marshall Rosenberg)
+
+* Resilience: The Science of Masting Life's Greatest Challenges (Steven M. S    outhwick and Dennis Charney)  
 
 ### Academia / Career
 

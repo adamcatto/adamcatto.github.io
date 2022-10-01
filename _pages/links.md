@@ -4,9 +4,11 @@ title: "Links"
 excerpt: "Links"
 author_profile: true
 redirect_from:
- - /questions/
+ - /links/
 ---
 {% include base_path %}
+
+## Research
 
 ### General Research Advice
 
@@ -32,4 +34,22 @@ redirect_from:
 
 * [Deep Learning Book – Goodfellow et al](https://www.deeplearningbook.org)
 
+### Interesting Labs
 
+(Not necessarily related to my primary research areas, and besides labs I am affiliated with)
+
+* [Gao Research Group](http://www.gao.caltech.edu), Caltech (PI: Wei Gao)
+
+* [Microsystems and Mechanobiology Lab](https://www.andrew.cmu.edu/user/bex/), CMU (PI: Rebecca Taylor)
+
+* [Church Lab](https://arep.med.harvard.edu), Harvard (PI: George Church)
+
+* [Levin Lab](https://ase.tufts.edu/biology/labs/levin/), Tufts (PI: Michael Levin)
+
+* [Talmo Lab](https://talmolab.org), Salk Institute (PI: Talmo Pereira)
+
+* [Hasso Plattner Institute at Mount Sinai](https://www.hpims.org), Icahn School of Medicine at Mount Sinai
+
+* [Deisseroth Lab](https://web.stanford.edu/group/dlab/), Stanford (PI: Karl Deisseroth)
+
+* [Synthetic Neurobiology Group](http://syntheticneurobiology.org), MIT (PI: Ed Boyden)
