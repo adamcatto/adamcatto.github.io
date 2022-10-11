@@ -24,7 +24,7 @@ redirect_from:
 
 * [Steven Weinberg's Four Golden Lessons for Graduate Students / Beginning Scientists](https://www.nature.com/articles/426389a)
 
-### Machine Learning / AI / Statistics – Advice, Courses, Vision
+### Computer Science / Machine Learning / AI / Statistics – Advice, Courses, Vision
 
 * [Full Stack Deep Learning Course](https://fullstackdeeplearning.com), UC Berkeley
 
@@ -35,6 +35,14 @@ redirect_from:
 * [John Tukey – Sunset Salvo](http://www-stat.wharton.upenn.edu/~steele/HoldingPen/SunsetSalvo.pdf)
 
 * [Deep Learning Book – Goodfellow et al](https://www.deeplearningbook.org)
+
+* [Simon Peyton Jones on Research Skills](https://simon.peytonjones.org/great-research-paper/) (Simon is the inventor of the Haskell programming language); topics at this link are:
+
+  * "How to Write a Great Research Paper"
+
+  * "How to Give a Great Research Talk"
+
+  * "How to Write a Great Grant Proposal"
 
 ### Interesting Labs
 
