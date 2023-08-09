@@ -11,16 +11,13 @@ redirect_from:
 
 ## Currently Reading
 
-
-* Prey (Michael Crichton)
-
-* Advice for a Young Investigator (Santiago Ramon y Cajal)
-
-* The Touchstone of Life (Werner Loewenstein)
+* Contact (Carl Sagan)
 
 * Moby-Dick or, the Whale (Melville)
 
-* The Code Breaker: Jennifer Doudna, Gene Editing, and the Future of the Human Race (Isaacson)
+* Brain-Computer Interfacing (Rao)
+
+* Electrophysical Agents: Evidence-Based Practice (eds. Watson and Nussbaum)
 
 ## Read
 
@@ -46,7 +43,7 @@ redirect_from:
 
 * Lord of the Flies (William Golding)
 
-* The Harry Potter Series (obviously)
+* The Harry Potter Series
 
 * Percy Jackson and the Olympians: Full Series
 
@@ -60,7 +57,17 @@ redirect_from:
 
 * The Epic of Gilgamesh (Anonymous)
 
+* Hadji Murat (Leo Tolstoy)
+
+* The Gambler (Fyodor Dostoevsky)
+
+* Romance of the Three Kingdoms / San Guo Yan Yi (Luo Gaunzhong)
+
 ### Biology and Medicine
+
+* **Biodesign (Yock et al)**
+
+    * Fantastic resource for my career interests. Something you come back to frequently if you work in this area.
 
 * The Secret Language of Cells: What Biological XConversations Tell Us About the Brain-Body Connection, the Future of Medicine, and Life Itself (Jon Lieff)
 
@@ -85,6 +92,10 @@ redirect_from:
 * Proving Darwin: Making Biology Mathematical (Gregory Chaitin)
 
 * Lifespan: Why We Age – and Why We Don't Have To (David Sinclair)
+
+* Advice for a Young Investigator (Santiago Ramón y Cajal)
+
+* The Effective Scientist (Corey Bradshaw)
 
 ### History of Science and Technology; Technology and Society
 
@@ -134,7 +145,7 @@ redirect_from:
 
 * Five Thousand B.C. and Other Philosophical Fantasies (Raymond Smullyan)
 
-* Striking Thoughts: Bruce Lee's Wisdom for Daily Living (Bruce Lee)
+* **Striking Thoughts: Bruce Lee's Wisdom for Daily Living (Bruce Lee)**
 
 * The Intellectual Life: Its Spirit, Conditions, Methods (Antonin Sertillanges)
 
@@ -163,6 +174,8 @@ redirect_from:
 * Our Mathematical Universe (Max Tegmark)
 
 * The Five Dialogues – Euthyphro, Apology, Crito, Meno, Phaedo (Plato)
+
+* Dao De Jing (Le Guin translation)
 
 ### Engineering, Computer Science
 
@@ -212,6 +225,8 @@ redirect_from:
 
 * Logics for Computer Science (Anita Wasilewska)
 
+    * I served as an editor for this book.
+
 * Category Theory (Steve Awodey)
 
 * Elementary Applied Topology (Robert Ghrist)
@@ -238,13 +253,17 @@ redirect_from:
 
 * Nonviolent Communication (Marshall Rosenberg)
 
-* Resilience: The Science of Masting Life's Greatest Challenges (Steven M. S    outhwick and Dennis Charney)  
+* Resilience: The Science of Masting Life's Greatest Challenges (Steven M. Southwick and Dennis Charney)
 
 ### Academia / Career
 
 * Next Gen PhD: A Guide to Career Paths in Science (Melanie V. Sinche)
 
 * A PhD Is Not Enough: A Guide To Survival In Science (Peter J. Feibelman)
+
+* Letters to a Young Scientist (EO Wilson)
+
+* Make it Clear (Patrick Henry Winston)
 
 ### Biography / Memoir
 
@@ -261,6 +280,8 @@ redirect_from:
 * The Glass Castle (Jeanette Walls)
 
 * The Ph.D. Grind (Philip Guo)
+
+* Birth of Theorem (Cedric Villani)
 
 ### Writing
 
@@ -279,5 +300,7 @@ redirect_from:
 * The Black Swan (Nassim Taleb)
 
 * The Art of War (Sun Tzu)
+
+* Mastering the Art of War (Zhuge Liang and Ji Liu)
 
 * Letters to a Young Scientist (EO Wilson)
