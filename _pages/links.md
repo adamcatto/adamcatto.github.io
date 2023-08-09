@@ -64,3 +64,8 @@ redirect_from:
 
 * [Synthetic Neurobiology Group](http://syntheticneurobiology.org), MIT (PI: Ed Boyden)
 
+* [Sinai Biodesign](https://www.sinaibio.design)
+
+* [Computational Imaging Lab @ Princeton CS, Felix Heide](https://light.princeton.edu)
+
+* [4D Cell Biology Lab @ UCSD, Schoeneberg](https://www.schoeneberglab.org)
