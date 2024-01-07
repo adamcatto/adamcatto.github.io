@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-[Link to PDF copy](https://github.com/adamcatto/adamcatto.github.io/blob/master/files/agoc-cv-2022.pdf)
+[Link to PDF copy](https://github.com/adamcatto/adamcatto.github.io/blob/master/files/catto-adam-cv-2024.pdf)
 
 Education
 ======
@@ -21,7 +21,7 @@ Work experience
 * Jun 2022 - Present: Data Science Analyst
   * Shen Laboratory, Department of Neuroscience
   * Icahn School of Medicine at Mount Sinai
-  * Topics: Machine learning and AI for medical imaging, omics data analysis, and automation of behavioral experiment
+  * Topics: Machine learning and AI for medical imaging, omics data analysis, electrophysiology, genomics, and automation of behavioral experiments
 
 * Aug 2020 - Jun 2022: Graduate Research Assistant
   * Distributed Artificial Intelligence Laboratory
@@ -61,6 +61,8 @@ Skills
   * Deep Convolutional Neural Networks
   * Multilayer Perceptrons
   * Reinforcement Learning
+  * Transformers
+  * Implicit Neural Representations
 
 Publications
 ======

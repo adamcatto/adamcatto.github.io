@@ -9,19 +9,14 @@ redirect_from:
 
 {% include base_path %}
 
-The goal of my research is to develop tools and make basic discoveries that inform and facilitate precision health/medicine. Precision medicine may be broadly defined as "the right intervention for the right patient at the right time", and perhaps more specifically as "determining the (potentially multifactorial / copmlex) etiology of an individual's disease(s) / health state, and making some intervention which best addresses that etiology". Given this description, we may consider a broad class of interventions, ranging from pharmacological to surgical to lifestyle changes. My research interests are predominantly focused on conditions in which pharmacological action is most appropriate, but I am interested in the whole spectrum of health science. Here is a list of some research areas I am most interested in:
+I currently work on applications of machine learning to neural signal processing, behavioral neuroscience, and biomedical imaging. Examples of my work in these areas include
 
-1. AI-assisted protein engineering and design of targeted drug delivery systems
+* Domain-generalized deep learning for detecting neuronal spikes in whole-cell patch-clamp postsynaptic current traces
 
-2. Cell surface proteomic analysis / signal transduction and their heterogeneity across cell types and disease states
+* Forecasting lab animal behavioral events with computer vision and sequence modeling
 
-3. Continuous health monitoring via wearable biosensors
+* Predicting neuroanatomical sources of detailed electrophysiology spike traces
 
-4. Integration of multi-omic, medical imaging, EHR, and wearable sensor data for personalized disease progression monitoring, disease subtyping, risk scoring, and further clinical decision support
+* Benchmarking of self-supervised learning methods for mammograms
 
-5. Development of machine learning methods that effectively handle imbalanced, high-dimensional, high-missingness datasets
-
-6. Understanding mechanisms of aging and age-related diseases, and designing interventions to combat age-related decline in health
-
-I am still exploring these topics and deciding what to focus on, as there is only so much one can do at a time, but I hope to incorporate each of these threads into my research career long-term.
-
+In my neural data science research, I have noticed two main engineering and informatics bottlenecks: (i) parallel acquistition and modulation of multiscale neural activity; (ii) integration of many modalities of neuroanatomical and neurophysiological data. In order to contribute to our accelerated ability to understand the mammalian nervous system, I aim to develop technologies for recording, modulating, and understanding large-scale neural activity on fast timescales. On the recording and modulating sides, I am especially interested in utilizing optical and acoustic metamaterials for minimally-invasive in vivo imaging and control of nerve activity – especially deep brain structures – and implementing image and signal processing libraries for these application areas. However, to really understand underlying physiology, we must correlate these various signals with each other and with manifestations of behaviors; I will utilize interpretable machine learning to discover relationships between different neural signals, such as spatial transcriptomics and calcium dynamics.
