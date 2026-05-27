@@ -1,0 +1,35 @@
+---
+import ShowcaseLayout from "../../layouts/ShowcaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { resolveProjectVideos } from "../../lib/contentVideos";
+import { getProjectLinks, getShowcaseSlug } from "../../lib/showcase";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: getShowcaseSlug(project.id) },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const slug = getShowcaseSlug(project.id);
+const { Content, headings } = await render(project);
+const links = getProjectLinks(project.data);
+const videos = resolveProjectVideos(slug, project.data.videos ?? []);
+---
+
+<ShowcaseLayout
+  title={project.data.title}
+  description={project.data.description}
+  tags={project.data.tags}
+  thumbnail={project.data.thumbnail}
+  video={project.data.video}
+  videos={videos}
+  links={links}
+  backHref="/projects"
+  backLabel="Back to Projects"
+  headings={headings}
+>
+  <Content />
+</ShowcaseLayout>

@@ -1,0 +1,49 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { getVideoEmbedUrl } from "../lib/showcase";
+
+interface Props {
+  title: string;
+  thumbnail?: ImageMetadata;
+  video?: string;
+  label?: string;
+  class?: string;
+  imageClass?: string;
+}
+
+const {
+  title,
+  thumbnail,
+  video,
+  label,
+  class: className = "",
+  imageClass = "w-full h-48 object-cover",
+} = Astro.props;
+const embedUrl = video ? getVideoEmbedUrl(video) : null;
+---
+
+{(video || thumbnail) && (
+  <figure class:list={[className]}>
+    {label && <figcaption class="text-sm font-medium text-gray-700 mb-2">{label}</figcaption>}
+    <div class="relative bg-gray-100 rounded-lg overflow-hidden">
+    {video ? (
+      <div class="aspect-video">
+        {embedUrl ? (
+          <iframe
+            src={embedUrl}
+            class="w-full h-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        ) : (
+          <video src={video} class="w-full h-full object-cover" controls preload="metadata" />
+        )}
+      </div>
+    ) : (
+      thumbnail && <Image src={thumbnail} alt={title} class={imageClass} />
+    )}
+    </div>
+  </figure>
+)}

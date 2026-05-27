@@ -44,7 +44,15 @@ const projects = defineCollection({
       title: z.string(),
       description: z.string().optional(),
       thumbnail: image().optional(), // Local image from folder
-      video: z.string().optional(), // Video URL
+      video: z.string().optional(), // Single video URL or path (legacy)
+      videos: z
+        .array(
+          z.object({
+            src: z.string(),
+            title: z.string().optional(),
+          })
+        )
+        .default([]),
       url: z.string().optional(),
       github: z.string().optional(),
       tags: z.array(z.string()).default([]),
@@ -61,6 +69,14 @@ const software = defineCollection({
       description: z.string().optional(),
       thumbnail: image().optional(),
       video: z.string().optional(),
+      videos: z
+        .array(
+          z.object({
+            src: z.string(),
+            title: z.string().optional(),
+          })
+        )
+        .default([]),
       url: z.string().optional(),
       github: z.string().optional(),
       docs: z.string().optional(),

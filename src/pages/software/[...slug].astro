@@ -1,0 +1,36 @@
+---
+import ShowcaseLayout from "../../layouts/ShowcaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { resolveSoftwareVideos } from "../../lib/contentVideos";
+import { getShowcaseSlug, getSoftwareLinks } from "../../lib/showcase";
+
+export async function getStaticPaths() {
+  const software = await getCollection("software");
+  return software.map((item) => ({
+    params: { slug: getShowcaseSlug(item.id) },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const slug = getShowcaseSlug(item.id);
+const { Content, headings } = await render(item);
+const links = getSoftwareLinks(item.data);
+const videos = resolveSoftwareVideos(slug, item.data.videos ?? []);
+---
+
+<ShowcaseLayout
+  title={item.data.title}
+  description={item.data.description}
+  tags={item.data.tags}
+  thumbnail={item.data.thumbnail}
+  video={item.data.video}
+  videos={videos}
+  language={item.data.language}
+  links={links}
+  backHref="/software"
+  backLabel="Back to Software"
+  headings={headings}
+>
+  <Content />
+</ShowcaseLayout>
