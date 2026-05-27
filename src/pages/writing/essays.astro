@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const essays = (await getCollection("writing"))
+  .filter((piece) => !piece.data.draft && piece.data.category === "essays")
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Essays">
+  <div class="prose">
+    <h1>Essays</h1>
+
+    <p>
+      Long-form analytical writing on research, engineering, and ideas. Each essay shows its
+      version history from GitHub commits, so you can see how my thinking has evolved.
+    </p>
+
+    <p class="not-prose">
+      <a href="/writing" class="text-sm text-blue-600 hover:text-blue-700">
+        &larr; View all writing
+      </a>
+    </p>
+
+    {essays.length === 0 ? (
+      <p class="text-gray-500 italic mt-8">
+        No essays published yet. Check back soon.
+      </p>
+    ) : (
+      <div class="space-y-6 mt-8">
+        {essays.map((essay) => (
+          <article class="border-l-2 border-blue-300 pl-4 hover:border-blue-500 transition-colors">
+            <a href={`/writing/${essay.id.replace(/\/index$/, "")}`} class="block group">
+              <h2 class="text-xl font-medium text-gray-900 group-hover:text-blue-600 mt-0 mb-1 transition-colors">
+                {essay.data.title}
+              </h2>
+              <time class="text-sm text-gray-500">
+                {essay.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              {essay.data.description && (
+                <p class="text-gray-600 mt-2 mb-0">{essay.data.description}</p>
+              )}
+              {essay.data.tags.length > 0 && (
+                <div class="flex gap-2 mt-2">
+                  {essay.data.tags.map((tag) => (
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

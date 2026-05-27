@@ -1,0 +1,108 @@
+---
+import Search from "../components/Search.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Adam Catto - Data Scientist & Scientific Programmer" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: "/", label: "About" },
+  { href: "/research", label: "Research" },
+  { href: "/publications", label: "Publications" },
+  { href: "/projects", label: "Projects" },
+  { href: "/software", label: "Software" },
+  { href: "/apps", label: "App Studio" },
+  { href: "/writing", label: "Writing" },
+  { href: "/cv", label: "CV" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- KaTeX CSS for LaTeX math rendering -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+      integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+      crossorigin="anonymous"
+    />
+    <!-- Pagefind CSS -->
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+    <script is:inline src="/pagefind/pagefind-ui.js"></script>
+    <title>{title} | Adam Catto</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <div class="max-w-4xl mx-auto px-8 py-4">
+        <nav class="flex items-center justify-between">
+          <a href="/" class="text-xl font-semibold text-gray-900 hover:text-gray-600">
+            Adam Catto
+          </a>
+          <div class="flex items-center gap-6">
+            <ul class="flex items-center gap-6 text-sm">
+              {navLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class:list={[
+                      "hover:text-gray-900 transition-colors",
+                      currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
+                        ? "text-gray-900 font-medium"
+                        : "text-gray-500",
+                    ]}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <Search />
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl mx-auto px-8 py-12 w-full">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-200 mt-auto">
+      <div class="max-w-4xl mx-auto px-8 py-8">
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <p>&copy; {new Date().getFullYear()} Adam Catto</p>
+          <div class="flex items-center gap-4">
+            <a href="https://github.com/adamcatto" class="hover:text-gray-900" target="_blank" rel="noopener">
+              GitHub
+            </a>
+            <a href="https://scholar.google.com/citations?user=YOUR_ID" class="hover:text-gray-900" target="_blank" rel="noopener">
+              Scholar
+            </a>
+            <a href="https://linkedin.com/in/adamcatto" class="hover:text-gray-900" target="_blank" rel="noopener">
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  @import "../styles/global.css";
+</style>

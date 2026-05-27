@@ -1,0 +1,117 @@
+---
+title: "Writing Technical Essays with LaTeX"
+description: "A guide to using LaTeX math and MDX features in essays."
+date: 2026-01-21
+category: tutorials
+tags: ["latex", "tutorial"]
+draft: false
+---
+
+This essay demonstrates how to write technical content with full LaTeX math support.
+
+## Inline Mathematics
+
+Write inline math with single dollar signs: $f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$.
+
+Greek letters work naturally: $\alpha, \beta, \gamma, \delta, \epsilon, \theta, \lambda, \mu, \sigma, \phi, \psi, \omega$.
+
+## Display Equations
+
+Use double dollar signs for display mode:
+
+$$
+\mathcal{F}\{f(t)\} = \int_{-\infty}^{\infty} f(t) e^{-2\pi i \xi t} \, dt
+$$
+
+### Numbered Equations
+
+For important equations you want to reference:
+
+$$
+\nabla^2 \phi = \frac{\partial^2 \phi}{\partial x^2} + \frac{\partial^2 \phi}{\partial y^2} + \frac{\partial^2 \phi}{\partial z^2} = 0 \tag{1}
+$$
+
+Laplace's equation (1) appears throughout physics.
+
+## Aligned Equations
+
+For multi-line derivations:
+
+$$
+\begin{aligned}
+\frac{d}{dx} \ln(x) &= \lim_{h \to 0} \frac{\ln(x+h) - \ln(x)}{h} \\
+&= \lim_{h \to 0} \frac{1}{h} \ln\left(\frac{x+h}{x}\right) \\
+&= \lim_{h \to 0} \frac{1}{h} \ln\left(1 + \frac{h}{x}\right) \\
+&= \frac{1}{x}
+\end{aligned}
+$$
+
+## Matrices and Linear Algebra
+
+$$
+\det(A - \lambda I) = \det \begin{pmatrix}
+a_{11} - \lambda & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} - \lambda & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn} - \lambda
+\end{pmatrix} = 0
+$$
+
+## Theorems and Proofs
+
+<div className="bg-gray-50 border-l-4 border-blue-500 p-4 my-4">
+**Theorem (Fundamental Theorem of Calculus).** Let $f$ be continuous on $[a,b]$ and let $F$ be any antiderivative of $f$. Then:
+
+$$
+\int_a^b f(x) \, dx = F(b) - F(a)
+$$
+</div>
+
+*Proof.* Let $G(x) = \int_a^x f(t) \, dt$. By the first part of the FTC, $G'(x) = f(x)$.
+Since $F$ is also an antiderivative, $F(x) = G(x) + C$ for some constant.
+Then $F(b) - F(a) = G(b) - G(a) = \int_a^b f(t) \, dt - 0$. ∎
+
+## Physics Examples
+
+Maxwell's equations in differential form:
+
+$$
+\begin{aligned}
+\nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0} & \text{(Gauss's law)} \\
+\nabla \cdot \mathbf{B} &= 0 & \text{(No magnetic monopoles)} \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} & \text{(Faraday's law)} \\
+\nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} & \text{(Ampère-Maxwell)}
+\end{aligned}
+$$
+
+## Machine Learning
+
+The cross-entropy loss for classification:
+
+$$
+\mathcal{L}(\theta) = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
+$$
+
+Backpropagation gradient:
+
+$$
+\frac{\partial \mathcal{L}}{\partial w_{jk}^{(l)}} = \frac{\partial \mathcal{L}}{\partial a_k^{(l)}} \cdot \frac{\partial a_k^{(l)}}{\partial z_k^{(l)}} \cdot \frac{\partial z_k^{(l)}}{\partial w_{jk}^{(l)}} = \delta_k^{(l)} \cdot a_j^{(l-1)}
+$$
+
+## Using Images from the Same Folder
+
+Place images in the essay folder and reference them:
+
+```markdown
+![My figure](./figure.png)
+```
+
+## For Pure LaTeX Documents
+
+If you prefer writing entire documents in LaTeX, you can:
+
+1. Write your essay as a `.tex` file
+2. Use pandoc to convert: `pandoc essay.tex -o essay.html --mathjax`
+3. Or use the `LatexDocument` component in MDX
+
+The site supports `.mdx` files with full JSX capabilities if you need more interactivity.

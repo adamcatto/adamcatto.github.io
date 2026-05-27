@@ -1,0 +1,86 @@
+---
+/**
+ * Component for rendering pure LaTeX documents.
+ *
+ * Usage in an MDX essay:
+ * ```mdx
+ * import LatexDocument from '../../components/LatexDocument.astro';
+ *
+ * <LatexDocument src="./paper.tex" />
+ * ```
+ *
+ * Requires pandoc to be installed: brew install pandoc
+ */
+
+import { convertLatexToHtml, isPandocAvailable } from "../lib/latex";
+import { readFile } from "fs/promises";
+import { resolve, dirname } from "path";
+
+interface Props {
+  /** Path to the .tex file, relative to the essay folder */
+  src: string;
+  /** Optional: path to a custom .cls or .sty file */
+  stylePath?: string;
+}
+
+const { src, stylePath } = Astro.props;
+
+let html = "";
+let error = "";
+
+const hasPandoc = await isPandocAvailable();
+
+if (!hasPandoc) {
+  error = "Pandoc is required to render LaTeX documents. Install with: brew install pandoc";
+} else {
+  try {
+    // The src path is relative to where this component is used
+    // In practice, you'd resolve this based on your essay's location
+    html = await convertLatexToHtml(src);
+  } catch (e) {
+    error = `Failed to convert LaTeX: ${e instanceof Error ? e.message : "Unknown error"}`;
+  }
+}
+---
+
+{error ? (
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 my-4">
+    <p class="text-red-700 text-sm font-medium">LaTeX Rendering Error</p>
+    <p class="text-red-600 text-sm mt-1">{error}</p>
+  </div>
+) : (
+  <div class="latex-document" set:html={html} />
+)}
+
+<style>
+  .latex-document {
+    /* LaTeX-like styling */
+    font-family: var(--font-serif), Georgia, serif;
+    line-height: 1.6;
+  }
+
+  .latex-document :global(h1),
+  .latex-document :global(h2),
+  .latex-document :global(h3) {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  .latex-document :global(.theorem),
+  .latex-document :global(.lemma),
+  .latex-document :global(.definition) {
+    margin: 1.5em 0;
+    padding: 1em;
+    background: #f8f9fa;
+    border-left: 3px solid #dee2e6;
+  }
+
+  .latex-document :global(.proof) {
+    margin: 1em 0;
+    font-style: italic;
+  }
+
+  .latex-document :global(.proof)::after {
+    content: "□";
+    float: right;
+  }
+</style>

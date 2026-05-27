@@ -1,0 +1,305 @@
+---
+// Search component using Pagefind
+---
+
+<div class="search-container">
+  <button
+    id="search-button"
+    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+    aria-label="Search"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    </svg>
+    <span>Search</span>
+    <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-mono bg-gray-100 text-gray-600 rounded">⌘K</kbd>
+  </button>
+
+  <dialog
+    id="search-modal"
+    class="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 border-none bg-transparent w-[80vw] max-w-3xl"
+  >
+    <div class="mt-[10vh] bg-white rounded-lg overflow-hidden shadow-2xl">
+      <!-- Search Input Area -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <svg class="w-6 h-6 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <div id="pagefind-search" class="flex-1"></div>
+          <button
+            id="close-search"
+            class="text-gray-400 hover:text-gray-600 flex-shrink-0"
+            aria-label="Close search"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Category Filters -->
+        <div id="category-filters" class="mt-4 flex flex-wrap gap-2">
+          <button
+            data-category="all"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          >
+            All
+          </button>
+          <button
+            data-category="publications"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            Publications
+          </button>
+          <button
+            data-category="writing"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            Writing
+          </button>
+          <button
+            data-category="projects"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            Projects
+          </button>
+          <button
+            data-category="software"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            Software
+          </button>
+          <button
+            data-category="apps"
+            class="category-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+          >
+            Apps
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Results Area -->
+      <div id="search-results-container" class="max-h-[60vh] overflow-y-auto"></div>
+
+      <!-- Search Tips -->
+      <div class="px-6 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs font-mono">↑↓</kbd>
+            <span>Navigate</span>
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs font-mono">Enter</kbd>
+            <span>Select</span>
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs font-mono">Esc</kbd>
+            <span>Close</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  #search-modal::backdrop {
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  dialog[open] {
+    animation: slideIn 0.2s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Style Pagefind UI to match site theme */
+  #pagefind-search :global(.pagefind-ui__search-input) {
+    border: none;
+    outline: none;
+    font-size: 1.125rem;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+  }
+
+  #pagefind-search :global(.pagefind-ui__search-input::placeholder) {
+    color: #9ca3af;
+  }
+
+  #pagefind-search :global(.pagefind-ui__search-input:focus) {
+    outline: none;
+  }
+
+  #pagefind-search :global(.pagefind-ui__form) {
+    margin: 0;
+  }
+
+  #pagefind-search :global(.pagefind-ui__search-clear) {
+    display: none;
+  }
+
+  #pagefind-search :global(.pagefind-ui__results) {
+    padding: 1rem 1.5rem;
+  }
+
+  #pagefind-search :global(.pagefind-ui__result) {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+  }
+
+  #pagefind-search :global(.pagefind-ui__result:last-child) {
+    border-bottom: none;
+  }
+
+  #pagefind-search :global(.pagefind-ui__result-title) {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111827;
+  }
+
+  #pagefind-search :global(.pagefind-ui__result-excerpt) {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+
+  #pagefind-search :global(mark) {
+    background-color: #fef3c7;
+    color: #92400e;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+</style>
+
+<script>
+  // Use global PagefindUI loaded from script tag
+  declare global {
+    interface Window {
+      PagefindUI: any;
+    }
+  }
+
+  const searchButton = document.getElementById('search-button');
+  const searchModal = document.getElementById('search-modal') as HTMLDialogElement;
+  const closeSearch = document.getElementById('close-search');
+  const pagefindContainer = document.getElementById('pagefind-search');
+  const categoryFilters = document.querySelectorAll('.category-filter');
+  let currentCategory = 'all';
+  let pagefindInstance: any = null;
+
+  // Initialize Pagefind UI when available
+  function initializeSearch() {
+    if (pagefindContainer && window.PagefindUI) {
+      pagefindInstance = new window.PagefindUI({
+        element: pagefindContainer,
+        showImages: false,
+        showSubResults: true,
+        excerptLength: 20,
+        resetStyles: false,
+      });
+    }
+  }
+
+  // Update category filter styling
+  function updateCategoryUI(category: string) {
+    categoryFilters.forEach(filter => {
+      const filterCategory = filter.getAttribute('data-category');
+      if (filterCategory === category) {
+        filter.classList.remove('bg-gray-100', 'text-gray-600');
+        filter.classList.add('bg-blue-600', 'text-white');
+      } else {
+        filter.classList.remove('bg-blue-600', 'text-white');
+        filter.classList.add('bg-gray-100', 'text-gray-600');
+      }
+    });
+  }
+
+  // Category filter handler
+  categoryFilters.forEach(filter => {
+    filter.addEventListener('click', () => {
+      const category = filter.getAttribute('data-category');
+      if (category) {
+        currentCategory = category;
+        updateCategoryUI(category);
+
+        // Re-trigger search with category filter
+        if (pagefindInstance) {
+          const input = pagefindContainer?.querySelector('input') as HTMLInputElement;
+          if (input && input.value) {
+            // Trigger search update
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }
+      }
+    });
+  });
+
+  // Wait for PagefindUI to load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSearch);
+  } else {
+    initializeSearch();
+  }
+
+  // Open modal
+  searchButton?.addEventListener('click', () => {
+    searchModal?.showModal();
+    // Focus the search input
+    setTimeout(() => {
+      const input = pagefindContainer?.querySelector('input');
+      input?.focus();
+    }, 100);
+  });
+
+  // Close modal
+  closeSearch?.addEventListener('click', () => {
+    searchModal?.close();
+  });
+
+  // Close on backdrop click
+  searchModal?.addEventListener('click', (e) => {
+    if (e.target === searchModal) {
+      searchModal.close();
+    }
+  });
+
+  // Close on Escape key
+  searchModal?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchModal.close();
+    }
+  });
+
+  // Keyboard shortcut: Cmd/Ctrl + K
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchModal?.showModal();
+      setTimeout(() => {
+        const input = pagefindContainer?.querySelector('input');
+        input?.focus();
+      }, 100);
+    }
+  });
+</script>

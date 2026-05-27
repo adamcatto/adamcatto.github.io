@@ -1,0 +1,180 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const allWriting = (await getCollection("writing"))
+  .filter((piece) => !piece.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Category metadata
+const categoryInfo: Record<string, { label: string; color: string; description: string }> = {
+  essays: {
+    label: "Essays",
+    color: "bg-blue-100 text-blue-700 border-blue-200",
+    description: "Long-form analytical pieces and insights"
+  },
+  fiction: {
+    label: "Fiction",
+    color: "bg-purple-100 text-purple-700 border-purple-200",
+    description: "Creative writing and stories"
+  },
+  reviews: {
+    label: "Reviews",
+    color: "bg-green-100 text-green-700 border-green-200",
+    description: "Book, paper, and tool reviews"
+  },
+  notes: {
+    label: "Notes",
+    color: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    description: "Short-form thoughts and observations"
+  },
+  tutorials: {
+    label: "Tutorials",
+    color: "bg-orange-100 text-orange-700 border-orange-200",
+    description: "Technical how-to guides"
+  }
+};
+
+// Category badge colors (for entries)
+const categoryBadgeColors: Record<string, string> = {
+  essays: "bg-blue-100 text-blue-700",
+  fiction: "bg-purple-100 text-purple-700",
+  reviews: "bg-green-100 text-green-700",
+  notes: "bg-yellow-100 text-yellow-700",
+  tutorials: "bg-orange-100 text-orange-700",
+};
+
+// Count by category
+const categoryCounts = allWriting.reduce((acc, piece) => {
+  acc[piece.data.category] = (acc[piece.data.category] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<BaseLayout title="Writing">
+  <div class="prose max-w-none">
+    <h1>Writing</h1>
+
+    <p>
+      Collected writing across different forms and genres. From technical essays and
+      tutorials to fiction and reviews, all with version history tracking.
+    </p>
+
+    <!-- Category Filter Buttons -->
+    <div class="not-prose mb-8">
+      <div class="flex flex-wrap gap-2">
+        <button
+          data-category="all"
+          class="category-filter px-4 py-2 text-sm rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
+        >
+          All ({allWriting.length})
+        </button>
+        {Object.entries(categoryInfo).map(([key, info]) => (
+          <button
+            data-category={key}
+            class:list={[
+              "category-filter px-4 py-2 text-sm rounded-lg font-medium transition-colors border",
+              info.color
+            ]}
+          >
+            {info.label} ({categoryCounts[key] || 0})
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {allWriting.length === 0 ? (
+      <p class="text-gray-500 italic mt-8">
+        No writing published yet. Check back soon.
+      </p>
+    ) : (
+      <div class="space-y-6 mt-8" id="writing-list">
+        {allWriting.map((piece) => (
+          <article
+            class="writing-entry border-l-2 border-gray-200 pl-4 hover:border-blue-400 transition-colors"
+            data-category={piece.data.category}
+          >
+            <a href={`/writing/${piece.id.replace(/\/index$/, "")}`} class="block group">
+              <div class="flex items-start justify-between gap-3 mb-1">
+                <h2 class="text-xl font-medium text-gray-900 group-hover:text-blue-600 mt-0 mb-0 transition-colors">
+                  {piece.data.title}
+                </h2>
+                <span class:list={["text-xs px-2 py-0.5 rounded font-medium flex-shrink-0", categoryBadgeColors[piece.data.category]]}>
+                  {categoryInfo[piece.data.category].label}
+                </span>
+              </div>
+              <time class="text-sm text-gray-500">
+                {piece.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              {piece.data.description && (
+                <p class="text-gray-600 mt-2 mb-0">{piece.data.description}</p>
+              )}
+              {piece.data.tags.length > 0 && (
+                <div class="flex gap-2 mt-2">
+                  {piece.data.tags.map((tag) => (
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<script>
+  const filterButtons = document.querySelectorAll('.category-filter');
+  const writingEntries = document.querySelectorAll('.writing-entry');
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+
+      // Update active button styling
+      filterButtons.forEach(btn => {
+        if (btn === button) {
+          btn.classList.remove('bg-blue-100', 'bg-purple-100', 'bg-green-100', 'bg-yellow-100', 'bg-orange-100');
+          btn.classList.remove('text-blue-700', 'text-purple-700', 'text-green-700', 'text-yellow-700', 'text-orange-700');
+          btn.classList.remove('border-blue-200', 'border-purple-200', 'border-green-200', 'border-yellow-200', 'border-orange-200');
+          btn.classList.add('bg-blue-600', 'text-white');
+          btn.classList.remove('border');
+        } else {
+          btn.classList.remove('bg-blue-600', 'text-white');
+          const btnCategory = btn.getAttribute('data-category');
+          if (btnCategory !== 'all') {
+            btn.classList.add('border');
+            // Restore category colors
+            const colorMap: Record<string, string[]> = {
+              essays: ['bg-blue-100', 'text-blue-700', 'border-blue-200'],
+              fiction: ['bg-purple-100', 'text-purple-700', 'border-purple-200'],
+              reviews: ['bg-green-100', 'text-green-700', 'border-green-200'],
+              notes: ['bg-yellow-100', 'text-yellow-700', 'border-yellow-200'],
+              tutorials: ['bg-orange-100', 'text-orange-700', 'border-orange-200'],
+            };
+            if (btnCategory && colorMap[btnCategory]) {
+              btn.classList.add(...colorMap[btnCategory]);
+            }
+          }
+        }
+      });
+
+      // Filter writing entries
+      writingEntries.forEach(entry => {
+        const entryCategory = entry.getAttribute('data-category');
+        if (category === 'all' || entryCategory === category) {
+          (entry as HTMLElement).style.display = 'block';
+        } else {
+          (entry as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,20 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { getEntry, render } from "astro:content";
+
+const page = await getEntry("pages", "cv");
+if (!page) {
+  throw new Error("CV page not found in content/pages/cv.md");
+}
+const { Content, headings } = await render(page);
+---
+
+<PageLayout title={page.data.title} description={page.data.description} headings={headings}>
+  <h1>{page.data.title}</h1>
+  <Content />
+</PageLayout>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

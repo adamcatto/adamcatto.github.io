@@ -1,0 +1,231 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const publications = (await getCollection("publications")).sort(
+  (a, b) => b.data.year - a.data.year
+);
+
+// Extract all unique categories
+const allCategories = [...new Set(publications.flatMap(pub => pub.data.categories || []))].sort();
+const allPublicationTypes = [...new Set(publications.map(pub => pub.data.publicationType || 'other'))].sort();
+---
+
+<BaseLayout title="Publications">
+  <div class="prose max-w-none">
+    <h1>Publications</h1>
+
+    <!-- Filters and Sorting Controls -->
+    <div class="not-prose mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Sort By -->
+        <div>
+          <label for="sort-by" class="block text-sm font-medium text-gray-700 mb-2">
+            Sort by
+          </label>
+          <select
+            id="sort-by"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="year-desc">Year (Newest First)</option>
+            <option value="year-asc">Year (Oldest First)</option>
+            <option value="citations-desc">Citations (Most First)</option>
+            <option value="citations-asc">Citations (Least First)</option>
+          </select>
+        </div>
+
+        <!-- Filter by Category -->
+        <div>
+          <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-2">
+            Filter by Category
+          </label>
+          <select
+            id="category-filter"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">All Categories</option>
+            {allCategories.map(cat => (
+              <option value={cat}>{cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</option>
+            ))}
+          </select>
+        </div>
+
+        <!-- Filter by Publication Type -->
+        <div>
+          <label for="type-filter" class="block text-sm font-medium text-gray-700 mb-2">
+            Filter by Type
+          </label>
+          <select
+            id="type-filter"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">All Types</option>
+            {allPublicationTypes.map(type => (
+              <option value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <!-- Active Filters Display -->
+      <div id="active-filters" class="mt-4 flex flex-wrap gap-2 hidden">
+        <span class="text-sm font-medium text-gray-700">Active filters:</span>
+      </div>
+    </div>
+
+    <!-- Publications List -->
+    <div class="space-y-8 mt-8" id="publications-list">
+      {publications.map((pub) => (
+        <article
+          class="publication-item border-l-2 border-gray-200 pl-4 hover:border-blue-400 transition-colors"
+          data-year={pub.data.year}
+          data-citations={pub.data.citations || 0}
+          data-categories={JSON.stringify(pub.data.categories || [])}
+          data-type={pub.data.publicationType || 'other'}
+        >
+          <h3 class="text-lg font-medium text-gray-900 mt-0 mb-1">
+            {pub.data.url ? (
+              <a href={pub.data.url} target="_blank" rel="noopener" class="hover:text-blue-600">
+                {pub.data.title}
+              </a>
+            ) : (
+              pub.data.title
+            )}
+          </h3>
+          <p class="text-sm text-gray-600 mb-1" set:html={pub.data.authors}></p>
+          <p class="text-sm text-gray-500 italic mb-2">
+            {pub.data.venue}, {pub.data.year}
+            {pub.data.citations !== undefined && (
+              <span class="ml-2 text-gray-400">• Cited by {pub.data.citations}</span>
+            )}
+          </p>
+
+          <!-- Categories and Publication Type -->
+          {(pub.data.categories && pub.data.categories.length > 0) && (
+            <div class="flex flex-wrap gap-2 mb-2">
+              {pub.data.categories.map(cat => (
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-blue-100 text-blue-800">
+                  {cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                </span>
+              ))}
+              {pub.data.publicationType && pub.data.publicationType !== 'other' && (
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-800">
+                  {pub.data.publicationType.charAt(0).toUpperCase() + pub.data.publicationType.slice(1)}
+                </span>
+              )}
+            </div>
+          )}
+
+          {pub.data.description && (
+            <p class="text-sm text-gray-700">{pub.data.description}</p>
+          )}
+          {pub.data.pdf && (
+            <a
+              href={pub.data.pdf}
+              class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mt-2"
+              target="_blank"
+              rel="noopener"
+            >
+              PDF &rarr;
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="no-results" class="hidden text-center py-12 text-gray-500">
+      <p class="text-lg">No publications found matching your filters.</p>
+      <button
+        id="clear-filters"
+        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Get all publications and filter controls
+    const publications = Array.from(document.querySelectorAll('.publication-item'));
+    const sortSelect = document.getElementById('sort-by') as HTMLSelectElement;
+    const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
+    const typeFilter = document.getElementById('type-filter') as HTMLSelectElement;
+    const publicationsList = document.getElementById('publications-list') as HTMLElement;
+    const noResults = document.getElementById('no-results') as HTMLElement;
+    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
+
+    function filterAndSort() {
+      const sortBy = sortSelect.value;
+      const categoryValue = categoryFilter.value;
+      const typeValue = typeFilter.value;
+
+      // Filter publications
+      let visiblePubs = publications.filter(pub => {
+        const categories = JSON.parse(pub.getAttribute('data-categories') || '[]');
+        const type = pub.getAttribute('data-type') || 'other';
+
+        const categoryMatch = !categoryValue || categories.includes(categoryValue);
+        const typeMatch = !typeValue || type === typeValue;
+
+        return categoryMatch && typeMatch;
+      });
+
+      // Sort publications
+      visiblePubs.sort((a, b) => {
+        const aYear = parseInt(a.getAttribute('data-year') || '0');
+        const bYear = parseInt(b.getAttribute('data-year') || '0');
+        const aCitations = parseInt(a.getAttribute('data-citations') || '0');
+        const bCitations = parseInt(b.getAttribute('data-citations') || '0');
+
+        switch (sortBy) {
+          case 'year-asc':
+            return aYear - bYear;
+          case 'year-desc':
+            return bYear - aYear;
+          case 'citations-asc':
+            return aCitations - bCitations;
+          case 'citations-desc':
+            return bCitations - aCitations;
+          default:
+            return bYear - aYear;
+        }
+      });
+
+      // Hide all publications first
+      publications.forEach(pub => {
+        (pub as HTMLElement).style.display = 'none';
+      });
+
+      // Show and reorder visible publications
+      if (visiblePubs.length > 0) {
+        visiblePubs.forEach(pub => {
+          (pub as HTMLElement).style.display = 'block';
+          publicationsList.appendChild(pub);
+        });
+        noResults.classList.add('hidden');
+        publicationsList.classList.remove('hidden');
+      } else {
+        noResults.classList.remove('hidden');
+        publicationsList.classList.add('hidden');
+      }
+    }
+
+    function clearFilters() {
+      sortSelect.value = 'year-desc';
+      categoryFilter.value = '';
+      typeFilter.value = '';
+      filterAndSort();
+    }
+
+    // Event listeners
+    sortSelect.addEventListener('change', filterAndSort);
+    categoryFilter.addEventListener('change', filterAndSort);
+    typeFilter.addEventListener('change', filterAndSort);
+    clearFiltersBtn.addEventListener('click', clearFilters);
+
+    // Initial render
+    filterAndSort();
+  </script>
+</BaseLayout>

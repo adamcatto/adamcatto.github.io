@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const notes = (await getCollection("writing"))
+  .filter((piece) => !piece.data.draft && piece.data.category === "notes")
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Notes">
+  <div class="prose">
+    <h1>Notes</h1>
+
+    <p>
+      Short-form thoughts and observations.
+    </p>
+
+    <p class="not-prose">
+      <a href="/writing" class="text-sm text-blue-600 hover:text-blue-700">
+        &larr; View all writing
+      </a>
+    </p>
+
+    {notes.length === 0 ? (
+      <p class="text-gray-500 italic mt-8">
+        No notes published yet. Check back soon.
+      </p>
+    ) : (
+      <div class="space-y-6 mt-8">
+        {notes.map((piece) => (
+          <article class="border-l-2 border-yellow-300 pl-4 hover:border-yellow-500 transition-colors">
+            <a href={`/writing/${piece.id.replace(/\/index$/, "")}`} class="block group">
+              <h2 class="text-xl font-medium text-gray-900 group-hover:text-yellow-700 mt-0 mb-1 transition-colors">
+                {piece.data.title}
+              </h2>
+              <time class="text-sm text-gray-500">
+                {piece.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              {piece.data.description && (
+                <p class="text-gray-600 mt-2 mb-0">{piece.data.description}</p>
+              )}
+              {piece.data.tags.length > 0 && (
+                <div class="flex gap-2 mt-2">
+                  {piece.data.tags.map((tag) => (
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

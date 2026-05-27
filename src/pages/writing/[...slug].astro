@@ -1,0 +1,177 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+import CommitHistory from "../../components/CommitHistory.astro";
+import { getCollection, render } from "astro:content";
+import { getFileCommitHistory } from "../../lib/github";
+
+export async function getStaticPaths() {
+  const writing = await getCollection("writing");
+  return writing.map((piece) => {
+    // piece.id is like "sample-essay/index", extract just the folder name
+    const slug = piece.id.replace(/\/index$/, "");
+    return {
+      params: { slug },
+      props: { piece },
+    };
+  });
+}
+
+const { piece } = Astro.props;
+const { Content, headings } = await render(piece);
+
+// Fetch commit history for this writing piece at build time
+// For folder-based writing: src/content/writing/my-piece/index.md
+const folderName = piece.id.replace(/\/index$/, "");
+const filePath = `src/content/writing/${folderName}/index.md`;
+const commits = await getFileCommitHistory(filePath);
+
+// Category badge colors
+const categoryColors: Record<string, string> = {
+  essays: "bg-blue-100 text-blue-700",
+  fiction: "bg-purple-100 text-purple-700",
+  reviews: "bg-green-100 text-green-700",
+  notes: "bg-yellow-100 text-yellow-700",
+  tutorials: "bg-orange-100 text-orange-700",
+};
+---
+
+<BaseLayout title={piece.data.title} description={piece.data.description}>
+  <div class="essay-with-toc">
+    <!-- Left margin: Table of Contents -->
+    <aside class="toc-sidebar hidden lg:block">
+      <TableOfContents headings={headings} />
+    </aside>
+
+    <!-- Main content -->
+    <article class="prose prose-content">
+      <header class="mb-8">
+        <h1 class="mb-2">{piece.data.title}</h1>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+          <time datetime={piece.data.date.toISOString()}>
+            {piece.data.date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+          {piece.data.updated && (
+            <span>
+              Updated: {piece.data.updated.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          )}
+          <span class:list={["text-xs px-2 py-0.5 rounded font-medium", categoryColors[piece.data.category]]}>
+            {piece.data.category}
+          </span>
+        </div>
+        {piece.data.tags.length > 0 && (
+          <div class="flex gap-2 mt-3">
+            {piece.data.tags.map((tag) => (
+              <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <Content />
+
+      <CommitHistory commits={commits} filePath={filePath} />
+    </article>
+
+    <!-- Right margin: Space for footnotes -->
+    <aside class="footnotes-sidebar hidden xl:block">
+      <!-- Footnotes will be positioned here via CSS -->
+    </aside>
+  </div>
+
+  <nav class="mt-12 pt-6 border-t border-gray-200">
+    <a href="/writing" class="text-sm text-gray-600 hover:text-gray-900">
+      &larr; Back to Writing
+    </a>
+  </nav>
+</BaseLayout>
+
+<style>
+  .essay-with-toc {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    position: relative;
+  }
+
+  /* Large screens: Show TOC on left */
+  @media (min-width: 1024px) {
+    .essay-with-toc {
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* Extra large screens: Show TOC on left and space for footnotes on right */
+  @media (min-width: 1280px) {
+    .essay-with-toc {
+      grid-template-columns: 200px 1fr 200px;
+      gap: 3rem;
+    }
+  }
+
+  .toc-sidebar {
+    grid-column: 1;
+  }
+
+  .prose-content {
+    grid-column: 2;
+    min-width: 0; /* Prevent overflow */
+  }
+
+  .footnotes-sidebar {
+    grid-column: 3;
+  }
+
+  /* Style for footnotes */
+  :global(.prose .footnotes) {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+  }
+
+  :global(.prose .footnotes ol) {
+    padding-left: 1.5rem;
+  }
+
+  :global(.prose .footnotes li) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.prose .footnotes p) {
+    margin: 0;
+  }
+
+  /* Footnote references in text */
+  :global(.prose sup) {
+    line-height: 0;
+  }
+
+  :global(.prose a[data-footnote-ref]) {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  :global(.prose a[data-footnote-ref]:hover) {
+    text-decoration: underline;
+  }
+
+  /* Back to content links in footnotes */
+  :global(.prose a[data-footnote-backref]) {
+    text-decoration: none;
+    margin-left: 0.25rem;
+  }
+</style>

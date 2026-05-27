@@ -1,0 +1,154 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { title, description, headings } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-with-toc">
+    <!-- Left margin: Table of Contents -->
+    <aside class="toc-sidebar hidden lg:block">
+      <TableOfContents headings={headings} />
+    </aside>
+
+    <!-- Main content -->
+    <article class="prose prose-content">
+      <slot />
+    </article>
+
+    <!-- Right margin: Space for footnotes (rendered by markdown) -->
+    <aside class="footnotes-sidebar hidden xl:block">
+      <!-- Footnotes will be positioned here via CSS -->
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-with-toc {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    position: relative;
+  }
+
+  /* Large screens: Show TOC on left */
+  @media (min-width: 1024px) {
+    .page-with-toc {
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* Extra large screens: Show TOC on left and space for footnotes on right */
+  @media (min-width: 1280px) {
+    .page-with-toc {
+      grid-template-columns: 200px 1fr 200px;
+      gap: 3rem;
+    }
+  }
+
+  .toc-sidebar {
+    grid-column: 1;
+  }
+
+  .prose-content {
+    grid-column: 2;
+    min-width: 0; /* Prevent overflow */
+  }
+
+  .footnotes-sidebar {
+    grid-column: 3;
+  }
+
+  /* Style for footnotes */
+  :global(.prose .footnotes) {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+  }
+
+  :global(.prose .footnotes ol) {
+    padding-left: 1.5rem;
+  }
+
+  :global(.prose .footnotes li) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.prose .footnotes p) {
+    margin: 0;
+  }
+
+  /* Footnote references in text */
+  :global(.prose sup) {
+    line-height: 0;
+  }
+
+  :global(.prose a[data-footnote-ref]) {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  :global(.prose a[data-footnote-ref]:hover) {
+    text-decoration: underline;
+  }
+
+  /* Back to content links in footnotes */
+  :global(.prose a[data-footnote-backref]) {
+    text-decoration: none;
+    margin-left: 0.25rem;
+  }
+</style>
+
+<style is:global>
+  /* Mobile: Show TOC as collapsible section at top */
+  @media (max-width: 1023px) {
+    .mobile-toc {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+    }
+
+    .mobile-toc details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #374151;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .mobile-toc details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-toc details summary::before {
+      content: '▶';
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .mobile-toc details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .mobile-toc .toc {
+      margin-top: 1rem;
+      position: static;
+      max-height: none;
+      padding: 0;
+    }
+  }
+</style>

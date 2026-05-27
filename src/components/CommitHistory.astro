@@ -1,0 +1,65 @@
+---
+import type { Commit } from "../lib/github";
+import { formatCommitDate } from "../lib/github";
+
+interface Props {
+  commits: Commit[];
+  filePath: string;
+}
+
+const { commits, filePath } = Astro.props;
+---
+
+{commits.length > 0 && (
+  <details class="mt-12 border-t border-gray-200 pt-6">
+    <summary class="cursor-pointer text-sm font-medium text-gray-600 hover:text-gray-900 select-none">
+      Version History ({commits.length} revision{commits.length !== 1 ? "s" : ""})
+    </summary>
+
+    <div class="mt-4 space-y-3">
+      {commits.map((commit, index) => (
+        <div class="flex items-start gap-3 text-sm">
+          <div class="flex-shrink-0 w-20 text-gray-500 font-mono text-xs">
+            {formatCommitDate(commit.date)}
+          </div>
+          <div class="flex-1">
+            <a
+              href={commit.url}
+              target="_blank"
+              rel="noopener"
+              class="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              {commit.message}
+            </a>
+            {index === 0 && (
+              <span class="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                latest
+              </span>
+            )}
+          </div>
+          <div class="flex-shrink-0">
+            <a
+              href={commit.url}
+              target="_blank"
+              rel="noopener"
+              class="font-mono text-xs text-gray-400 hover:text-gray-600"
+            >
+              {commit.sha}
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-4 text-xs text-gray-400">
+      Source: <a
+        href={`https://github.com/adamcatto/adamcatto.github.io/commits/main/${filePath}`}
+        target="_blank"
+        rel="noopener"
+        class="hover:text-gray-600 underline"
+      >
+        View full history on GitHub
+      </a>
+    </p>
+  </details>
+)}
