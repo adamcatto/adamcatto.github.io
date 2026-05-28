@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const slug = getShowcaseSlug(project.id);
-const { Content, headings } = await render(project);
+const { Content } = await render(project);
 const links = getProjectLinks(project.data);
 const videos = resolveProjectVideos(slug, project.data.videos ?? []);
 ---
@@ -29,7 +29,6 @@ const videos = resolveProjectVideos(slug, project.data.videos ?? []);
   links={links}
   backHref="/projects"
   backLabel="Back to Projects"
-  headings={headings}
 >
   <Content />
 </ShowcaseLayout>

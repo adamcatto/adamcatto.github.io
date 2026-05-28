@@ -82,3 +82,11 @@ a {
 :focus-visible {
   @apply outline-2 outline-offset-2 outline-blue-500;
 }
+
+/* Site shell: centered column — width must not be overridden by w-full on the same element */
+.site-container {
+  box-sizing: border-box;
+  width: min(42rem, calc(100% - 2.5rem));
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
