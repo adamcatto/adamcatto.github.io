@@ -6,10 +6,10 @@ const page = await getEntry("pages", "research");
 if (!page) {
   throw new Error("Research page not found in content/pages/research.md");
 }
-const { Content, headings } = await render(page);
+const { Content } = await render(page);
 ---
 
-<PageLayout title={page.data.title} description={page.data.description} headings={headings}>
+<PageLayout title={page.data.title} description={page.data.description}>
   <h1>{page.data.title}</h1>
   <Content />
 </PageLayout>

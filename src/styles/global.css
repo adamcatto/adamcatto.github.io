@@ -73,6 +73,45 @@ body {
   @apply bg-transparent p-0;
 }
 
+/* Footnotes in markdown content */
+.prose .footnotes {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+}
+
+.prose .footnotes ol {
+  padding-left: 1.5rem;
+}
+
+.prose .footnotes li {
+  margin-bottom: 0.5rem;
+}
+
+.prose .footnotes p {
+  margin: 0;
+}
+
+.prose sup {
+  line-height: 0;
+}
+
+.prose a[data-footnote-ref] {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prose a[data-footnote-ref]:hover {
+  text-decoration: underline;
+}
+
+.prose a[data-footnote-backref] {
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
 /* Link styles */
 a {
   @apply transition-colors duration-200;
@@ -83,10 +122,50 @@ a {
   @apply outline-2 outline-offset-2 outline-blue-500;
 }
 
-/* Site shell: centered column — width must not be overridden by w-full on the same element */
+/* Nav bar: same right edge as content, extends slightly further left */
+.site-nav {
+  box-sizing: border-box;
+  width: 52vw;
+  max-width: 52vw;
+  margin-left: 23vw;
+  margin-right: 25vw;
+  padding-inline: 0;
+}
+
+/* Footer shell */
 .site-container {
   box-sizing: border-box;
   width: min(42rem, calc(100% - 2.5rem));
   margin-inline: auto;
   padding-inline: 1.25rem;
+}
+
+/* Main content: 25% inset on each side (middle 50% of viewport) */
+.site-content {
+  box-sizing: border-box;
+  width: 50vw;
+  max-width: 50vw;
+  margin-left: 25vw;
+  margin-right: 25vw;
+  padding-inline: 0;
+}
+
+.site-content > * {
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .site-nav {
+    width: calc(100% - 2.5rem);
+    max-width: none;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+  }
+
+  .site-content {
+    width: calc(100% - 2.5rem);
+    max-width: none;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+  }
 }

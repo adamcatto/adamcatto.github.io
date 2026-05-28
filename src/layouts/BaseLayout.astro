@@ -1,5 +1,6 @@
 ---
 import Search from "../components/Search.astro";
+import "../styles/global.css";
 
 interface Props {
   title: string;
@@ -49,13 +50,13 @@ const navLinks = [
   </head>
   <body class="min-h-screen flex flex-col">
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-      <div class="site-container py-4">
-        <nav class="flex items-center justify-between">
-          <a href="/" class="text-xl font-semibold text-gray-900 hover:text-gray-600">
+      <div class="site-nav py-4">
+        <nav class="flex items-center justify-between gap-4">
+          <a href="/" class="text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
             Adam Catto
           </a>
-          <div class="flex items-center gap-6">
-            <ul class="flex items-center gap-6 text-sm">
+          <div class="flex items-center gap-4 min-w-0">
+            <ul class="flex items-center gap-4 text-sm">
               {navLinks.map((link) => (
                 <li>
                   <a
@@ -78,8 +79,10 @@ const navLinks = [
       </div>
     </header>
 
-    <main class="flex-1 site-container py-12">
-      <slot />
+    <main class="flex-1 py-12">
+      <div class="site-content">
+        <slot />
+      </div>
     </main>
 
     <footer class="border-t border-gray-200 mt-auto">
@@ -102,7 +105,3 @@ const navLinks = [
     </footer>
   </body>
 </html>
-
-<style is:global>
-  @import "../styles/global.css";
-</style>
