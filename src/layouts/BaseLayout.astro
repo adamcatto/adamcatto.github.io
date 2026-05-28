@@ -1,5 +1,5 @@
 ---
-import Search from "../components/Search.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -36,60 +36,30 @@ const navLinks = [
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <!-- KaTeX CSS for LaTeX math rendering -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
       integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
       crossorigin="anonymous"
     />
-    <!-- Pagefind CSS -->
     <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
     <script is:inline src="/pagefind/pagefind-ui.js"></script>
     <title>{title} | Adam Catto</title>
   </head>
   <body class="min-h-screen flex flex-col">
-    <header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-      <div class="site-nav py-4">
-        <nav class="flex items-center justify-between gap-4">
-          <a href="/" class="text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
-            Adam Catto
-          </a>
-          <div class="flex items-center gap-4 min-w-0">
-            <ul class="flex items-center gap-4 text-sm">
-              {navLinks.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    class:list={[
-                      "hover:text-gray-900 transition-colors",
-                      currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
-                        ? "text-gray-900 font-medium"
-                        : "text-gray-500",
-                    ]}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <Search />
-          </div>
-        </nav>
-      </div>
-    </header>
+    <SiteHeader currentPath={currentPath} navLinks={navLinks} />
 
-    <main class="flex-1 py-12">
+    <main class="flex-1 py-8 lg:py-12">
       <div class="site-content">
         <slot />
       </div>
     </main>
 
     <footer class="border-t border-gray-200 mt-auto">
-      <div class="site-container py-8">
-        <div class="flex items-center justify-between text-sm text-gray-500">
+      <div class="site-footer py-6 lg:py-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} Adam Catto</p>
-          <div class="flex items-center gap-4">
+          <div class="flex flex-wrap items-center gap-4">
             <a href="https://github.com/adamcatto" class="hover:text-gray-900" target="_blank" rel="noopener">
               GitHub
             </a>

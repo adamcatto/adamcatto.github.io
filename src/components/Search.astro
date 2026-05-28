@@ -5,19 +5,19 @@
 <div class="search-container">
   <button
     id="search-button"
-    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+    class="flex items-center gap-2 px-2.5 sm:px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
     aria-label="Search"
   >
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
     </svg>
-    <span>Search</span>
+    <span class="hidden sm:inline">Search</span>
     <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-mono bg-gray-100 text-gray-600 rounded">⌘K</kbd>
   </button>
 
   <dialog
     id="search-modal"
-    class="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 border-none bg-transparent w-[80vw] max-w-3xl"
+    class="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 border-none bg-transparent w-[calc(100vw-2rem)] sm:w-[80vw] max-w-3xl"
   >
     <div class="mt-[10vh] bg-white rounded-lg overflow-hidden shadow-2xl">
       <!-- Search Input Area -->
@@ -83,7 +83,7 @@
       <div id="search-results-container" class="max-h-[60vh] overflow-y-auto"></div>
 
       <!-- Search Tips -->
-      <div class="px-6 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500 flex items-center justify-between">
+      <div class="px-4 sm:px-6 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500 hidden sm:flex items-center justify-between">
         <div class="flex items-center gap-4">
           <span class="flex items-center gap-1">
             <kbd class="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs font-mono">↑↓</kbd>

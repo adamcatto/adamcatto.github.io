@@ -1,0 +1,120 @@
+---
+import Search from "./Search.astro";
+
+interface Props {
+  currentPath: string;
+  navLinks: { href: string; label: string }[];
+}
+
+const { currentPath, navLinks } = Astro.props;
+
+function isActive(href: string): boolean {
+  return currentPath === href || (href !== "/" && currentPath.startsWith(href));
+}
+---
+
+<header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+  <div class="site-nav py-3 lg:py-4">
+    <nav class="flex items-center justify-between gap-3" aria-label="Main">
+      <a href="/" class="text-lg lg:text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
+        Adam Catto
+      </a>
+
+      <!-- Desktop navigation -->
+      <div class="hidden lg:flex items-center gap-4 min-w-0">
+        <ul class="flex items-center gap-4 text-sm">
+          {navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={[
+                  "hover:text-gray-900 transition-colors",
+                  isActive(link.href) ? "text-gray-900 font-medium" : "text-gray-500",
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <Search />
+      </div>
+
+      <!-- Mobile: search + menu toggle -->
+      <div class="flex lg:hidden items-center gap-2 shrink-0">
+        <Search />
+        <button
+          type="button"
+          id="mobile-menu-button"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+          aria-controls="mobile-menu-panel"
+          aria-expanded="false"
+          aria-label="Open menu"
+        >
+          <svg class="w-6 h-6 menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="w-6 h-6 menu-icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile menu panel -->
+  <div id="mobile-menu-panel" class="mobile-menu hidden lg:hidden border-t border-gray-100 bg-white">
+    <div class="site-nav py-3">
+      <ul class="flex flex-col gap-1 text-base">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                "block rounded-md px-3 py-2.5 transition-colors",
+                isActive(link.href)
+                  ? "bg-gray-100 text-gray-900 font-medium"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.getElementById("mobile-menu-button");
+  const menuPanel = document.getElementById("mobile-menu-panel");
+  const openIcon = menuButton?.querySelector(".menu-icon-open");
+  const closeIcon = menuButton?.querySelector(".menu-icon-close");
+
+  function setMenuOpen(open: boolean) {
+    menuPanel?.classList.toggle("hidden", !open);
+    menuButton?.setAttribute("aria-expanded", String(open));
+    menuButton?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    openIcon?.classList.toggle("hidden", open);
+    closeIcon?.classList.toggle("hidden", !open);
+    document.body.classList.toggle("overflow-hidden", open);
+  }
+
+  menuButton?.addEventListener("click", () => {
+    const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+    setMenuOpen(!isOpen);
+  });
+
+  menuPanel?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenuOpen(false));
+  });
+
+  window.matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
+    if (event.matches) setMenuOpen(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenuOpen(false);
+  });
+</script>

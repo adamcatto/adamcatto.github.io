@@ -95,7 +95,7 @@ const categoryCounts = allWriting.reduce((acc, piece) => {
             data-category={piece.data.category}
           >
             <a href={`/writing/${piece.id.replace(/\/index$/, "")}`} class="block group">
-              <div class="flex items-start justify-between gap-3 mb-1">
+              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3 mb-1">
                 <h2 class="text-xl font-medium text-gray-900 group-hover:text-blue-600 mt-0 mb-0 transition-colors">
                   {piece.data.title}
                 </h2>
