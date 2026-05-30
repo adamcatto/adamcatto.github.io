@@ -37,10 +37,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update publication citation counts
-
-Auto-updated by GitHub Actions workflow.
-
-Co-Authored-By: GitHub Actions <github-actions[bot]@users.noreply.github.com>"
+            git commit -m "chore: update publication citation counts. Auto-updated by GitHub Actions workflow."
             git push
           fi
