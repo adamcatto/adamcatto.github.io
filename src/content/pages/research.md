@@ -21,6 +21,10 @@ behavioral neuroscience, and functional genomics.[^1] In parallel, I am building
 
 In addition to my work at Mount Sinai, I have some additional research interests:
 
+### Functional Bacterial Genomics & Synthetic Microbiology
+
+Building an equivalent of [AlphaGenome](https://deepmind.google/blog/alphagenome-ai-for-better-understanding-the-genome/) for bacterial genomes. Can we predict functional properties of microorganisms from their DNA genomes? Can we infer their metabolic reaction networks? And building on this, can we propose genome edits to have desired functional effects?
+
 ### AI Governance & Legal Frameworks for AI
 
 Copyright law and computational frameworks for dealing with new challenges posed by generative AI. What constitutes fair use? What new paradigms of patent law are enabled by large AI systems?
