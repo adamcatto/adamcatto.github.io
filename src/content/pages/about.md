@@ -9,6 +9,8 @@ I am a data scientist in the Neuroscience Department at the
 Icahn School of Medicine at Mount Sinai, where I work on machine learning, AI, and
 high-performance scientific computing for electrophysiology, molecular neurobiology, and animal behavior quantification.
 
+Also, check out my writing on Substack at [Future and Ever](https://futureandever.substack.com).
+
 ## Previous
 
 Previously I was a master's student in the CUNY Graduate Center's Department of
