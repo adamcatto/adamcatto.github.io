@@ -8,7 +8,7 @@ have questions about my work, or just want to connect.
 
 ## Email
 
-[adam.catto@mssm.edu](mailto:adam.catto@mssm.edu)
+[agocatto@gmail.com](mailto:agocatto@gmail.com)
 
 ## Profiles
 
