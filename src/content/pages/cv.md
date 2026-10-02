@@ -17,7 +17,8 @@ Icahn School of Medicine at Mount Sinai
 *June 2022 – Present*
 
 Machine learning and AI for medical imaging, omics data analysis, electrophysiology,
-genomics, and automation of behavioral experiments.
+genomics, and automation of behavioral experiments. Foundation models for genomic DNA
+sequences.
 
 ### Graduate Research Assistant
 

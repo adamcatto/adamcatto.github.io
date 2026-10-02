@@ -84,6 +84,7 @@ DNA sequence-based tasks. Examples of that work include:
   patch-clamp postsynaptic current traces
 - Forecasting lab animal behavioral events with computer vision and sequence modeling
 - Predicting neuroanatomical sources of detailed electrophysiology spike traces[^2]
+- Foundation models for genomic DNA sequences
 - Benchmarking of self-supervised learning methods for mammograms
 
 [^1]: This work was conducted at the Icahn School of Medicine at Mount Sinai in the Department of Neuroscience.

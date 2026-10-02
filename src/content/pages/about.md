@@ -8,7 +8,7 @@ description: "Adam Catto works on long-horizon agents, scalable RL environments,
 Most recently I was a data scientist in the Neuroscience Department at the Icahn School of
 Medicine at Mount Sinai, where I worked on machine learning, AI, and high-performance
 scientific computing for electrophysiology, molecular neurobiology, and animal behavior
-quantification.
+quantification, and built foundation models for genomic DNA sequences.
 
 Before that, I was a master's student in the CUNY Graduate Center's Department of
 Computer Science, where I worked as a graduate research assistant in the
