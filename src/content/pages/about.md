@@ -1,6 +1,6 @@
 ---
 title: "About"
-description: "Adam Catto works on long-horizon agents, trustworthy AI, and scalable RL environments."
+description: "Adam Catto works on long-horizon agents, scalable RL environments, evals, and trustworthy AI."
 ---
 
 ## Background

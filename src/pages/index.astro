@@ -31,12 +31,20 @@ const focus = [
     body: "Agents that carry work through over long horizons and keep learning as they go: continual learning, memory, and adaptation without forgetting.",
   },
   {
+    title: "Scalable RL environments",
+    body: "Creating training environments for agents at scale: diverse, verifiable, and open-ended, plus semi-verifiable domains and the algorithms that learn from them.",
+  },
+  {
+    title: "Benchmarks & evals",
+    body: "Measuring what agents can actually do, with evaluations that hold up over long horizons and resist saturation.",
+  },
+  {
     title: "Trustworthy AI",
     body: "Making agent behavior reliable, legible, and safe to deploy where the stakes are high.",
   },
   {
-    title: "Scalable RL environments",
-    body: "Creating training environments for agents at scale: diverse, verifiable, and open-ended.",
+    title: "Alignment & governance",
+    body: "Keeping capable systems aligned with what people intend, and the policy and institutions to govern them.",
   },
   {
     title: "Frontier directions",
@@ -75,7 +83,7 @@ const exploring = [
 
 const reading = getBookshelf().active[0];
 
-const letters = "ABCD";
+const letters = "ABCDEF";
 ---
 
 <BaseLayout title="About" description={page.data.description}>
@@ -88,8 +96,8 @@ const letters = "ABCD";
       </h1>
       <p class="mt-7 max-w-[600px] text-lg leading-relaxed text-gray-600">
         I'm joining the AI Hub at BNY to work on agents and trustworthy AI. My research centers on
-        long-horizon agents, continual learning, scalable RL environment creation, and other frontier
-        directions toward AGI and ASI. Before this, I was a data scientist in Neuroscience at Mount
+        long-horizon agents, continual learning, scalable RL environment creation, evals, alignment,
+        and other frontier directions toward AGI and ASI. Before this, I was a data scientist in Neuroscience at Mount
         Sinai, building ML for electrophysiology, molecular neurobiology, and animal behavior.
       </p>
       <div class="mt-9 flex flex-wrap gap-3">
@@ -144,7 +152,7 @@ const letters = "ABCD";
       <h2 id="focus"><span class="num">01</span>Research focus</h2>
       <a href={url("/research")} class="muted-link text-sm">Research <span aria-hidden="true">→</span></a>
     </div>
-    <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))]">
+    <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
       {focus.map((item, i) => (
         <article class="card p-6">
           <span class="mono text-xs text-[var(--accent)]">{letters[i]}</span>

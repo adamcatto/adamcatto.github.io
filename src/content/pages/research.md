@@ -1,6 +1,6 @@
 ---
 title: "Research"
-description: "Long-horizon agents, trustworthy AI, scalable RL environments, and frontier directions toward AGI."
+description: "Long-horizon agents, scalable RL environments, evals, trustworthy AI, alignment, and frontier directions toward AGI."
 ---
 
 ## Current focus
@@ -14,15 +14,27 @@ How do we build agents that carry work through over long horizons, and keep lear
 I'm interested in memory, credit assignment over long trajectories, and continual learning that
 lets an agent adapt to new tasks without forgetting old ones.
 
+### Scalable RL environments
+
+Agents are only as good as the worlds they train in. I'm working on ways to create RL environments
+at scale that are diverse, verifiable, and open-ended enough to keep teaching. I'm also interested
+in semi-verifiable domains, where outcomes can only be partly or noisily checked, and in algorithms
+that can still learn reliably from them.
+
+### Benchmarks & evals
+
+Measuring what agents can actually do: benchmarks and evaluations that hold up over long horizons,
+resist saturation and gaming, and say something about real-world reliability.
+
 ### Trustworthy AI
 
 Making agent behavior reliable, legible, and safe to deploy where the stakes are high: evaluation,
 oversight, and the engineering that lets people depend on what an agent does.
 
-### Scalable RL environments
+### Alignment & AI governance
 
-Agents are only as good as the worlds they train in. I'm working on ways to create RL environments
-at scale that are diverse, verifiable, and open-ended enough to keep teaching.
+Keeping increasingly capable systems aligned with what people intend, and the institutions, policy,
+and legal frameworks needed to govern them well.
 
 ### Frontier directions
 
@@ -57,7 +69,7 @@ Philosophical questions raised by AI, engineering, and neuroscience; computation
 philosophy; philosophy of physics, computational metaphysics, and more speculative approaches.
 Aristotle and Olaf Stapledon are perennial favorites.
 
-### AI governance & legal frameworks for AI
+### Law & generative AI
 
 Copyright law and computational frameworks for dealing with new challenges posed by generative AI.
 What constitutes fair use? What new paradigms of patent law are enabled by large AI systems?
