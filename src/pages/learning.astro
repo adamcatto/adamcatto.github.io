@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { active, past } from "../data/learning";
+
+const pastCount = past.reduce((n, group) => n + group.items.length, 0);
+---
+
+<BaseLayout title="Learning" description="Courses, lecture series, and technical books I'm working through, and the ones behind me.">
+  <section class="flex flex-wrap items-end justify-between gap-8 pb-12 border-b border-gray-200">
+    <div class="flex-[1_1_520px] min-w-0">
+      <p class="eyebrow">Technical learning</p>
+      <h1 class="mt-6 text-[clamp(40px,5vw,60px)] leading-[1.04] tracking-[-0.04em] font-medium text-gray-950">Still studying.</h1>
+      <p class="mt-5 max-w-[560px] text-[17px] leading-relaxed text-gray-600">
+        Courses, lecture series, and technical books I'm working through right now, and the ones that got me here.
+      </p>
+    </div>
+    <dl class="flex gap-10">
+      {[
+        ["Active", active.length],
+        ["Past", pastCount],
+      ].map(([label, value]) => (
+        <div>
+          <dt class="mono text-[11px] uppercase tracking-[0.12em] text-gray-400">{label}</dt>
+          <dd class="mt-2 text-[32px] font-medium tracking-[-0.03em] text-gray-900">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Active -->
+  <section class="mt-14" aria-labelledby="active">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="active" class="flex items-center gap-3 text-[22px] font-medium tracking-[-0.02em] text-gray-900">
+        <span aria-hidden="true" class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+        Active
+      </h2>
+      <span class="mono text-xs text-gray-400">{active.length} in progress</span>
+    </div>
+    <ul class="mt-6 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))]">
+      {active.map((item) => (
+        <li>
+          <a href={item.url} class="card row flex h-full flex-col p-6" target="_blank" rel="noopener">
+            <div class="mono flex items-center justify-between gap-4 text-[11px] uppercase tracking-[0.08em]">
+              <span class="text-[var(--accent)]">{item.kind}</span>
+              <span class="text-gray-400">{item.when} <span aria-hidden="true" class="ml-1">↗</span></span>
+            </div>
+            <h3 class="row-title mt-5 text-xl font-medium tracking-[-0.02em] text-gray-900">{item.title}</h3>
+            <p class="mt-1 text-sm text-gray-500">{item.by}</p>
+            {item.note && <p class="mt-4 text-sm leading-relaxed text-gray-600">{item.note}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Past -->
+  <section class="mt-20" aria-labelledby="past">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="past" class="text-[22px] font-medium tracking-[-0.02em] text-gray-900">Past</h2>
+      <span class="mono text-xs text-gray-400">{pastCount} finished</span>
+    </div>
+    <div class="mt-6 grid gap-x-12 gap-y-10 [grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))]">
+      {past.map((group) => (
+        <div>
+          <h3 class="mono pb-3 border-b border-gray-200 text-xs font-medium uppercase tracking-[0.12em] text-[var(--accent)]">{group.area}</h3>
+          <ul>
+            {group.items.map((item) => {
+              const Row = item.url ? "a" : "div";
+              return (
+                <li>
+                  <Row
+                    href={item.url}
+                    target={item.url && "_blank"}
+                    rel={item.url && "noopener"}
+                    class="row grid items-baseline gap-x-4 py-3.5 border-b border-gray-100 [grid-template-columns:44px_minmax(0,1fr)_auto]"
+                  >
+                    <span class="mono text-xs text-gray-400">{item.when ?? "·"}</span>
+                    <span class="min-w-0">
+                      <span class="row-title block text-[15px] font-medium leading-snug text-gray-900">{item.title}</span>
+                      <span class="mt-0.5 block text-[13px] text-gray-500">{item.by}</span>
+                    </span>
+                    <span class="mono text-[11px] uppercase tracking-[0.06em] text-gray-400">{item.kind}</span>
+                  </Row>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

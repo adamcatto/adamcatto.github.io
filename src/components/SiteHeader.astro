@@ -20,15 +20,15 @@ const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(li
 ---
 
 <header class="site-header sticky top-0 z-50 border-b border-gray-200">
-  <div class="site-shell py-3 lg:py-4">
+  <div class="site-shell py-3 xl:py-4">
     <nav class="flex items-center justify-between gap-5" aria-label="Main">
       <a href={url("/")} class="flex items-center gap-2.5 min-h-11 text-base font-semibold tracking-tight text-gray-900 whitespace-nowrap shrink-0">
         <span aria-hidden="true" class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
         Adam Catto
       </a>
 
-      <!-- Desktop navigation -->
-      <div class="hidden lg:flex items-center gap-6 min-w-0">
+      <!-- Desktop navigation: the full link list needs ~1150px, so collapse below xl -->
+      <div class="hidden xl:flex items-center gap-6 min-w-0">
         <ul class="flex items-center gap-5 text-sm">
           {navLinks.map((link) => (
             <li>
@@ -46,7 +46,7 @@ const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(li
       </div>
 
       <!-- Mobile: search + menu toggle -->
-      <div class="flex lg:hidden items-center gap-2 shrink-0">
+      <div class="flex xl:hidden items-center gap-2 shrink-0">
         <Search />
         <button
           type="button"
@@ -68,7 +68,7 @@ const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(li
   </div>
 
   <!-- Mobile menu panel -->
-  <div id="mobile-menu-panel" class="mobile-menu hidden lg:hidden border-t border-gray-200">
+  <div id="mobile-menu-panel" class="mobile-menu hidden xl:hidden border-t border-gray-200">
     <div class="site-shell py-3">
       <ul class="flex flex-col gap-1 text-base">
         {navLinks.map((link) => (
@@ -124,7 +124,7 @@ const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(li
     link.addEventListener("click", () => setMenuOpen(false));
   });
 
-  window.matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
+  window.matchMedia("(min-width: 1280px)").addEventListener("change", (event) => {
     if (event.matches) setMenuOpen(false);
   });
 
