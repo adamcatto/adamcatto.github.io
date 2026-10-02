@@ -1,19 +1,16 @@
 ---
-title: "About Me"
-description: "Learn more about my background, work, and interests"
+title: "About"
+description: "Adam Catto works on long-horizon agents, scalable RL environments, evals, and trustworthy AI."
 ---
 
-## Current
+## Background
 
-I am a data scientist in the Neuroscience Department at the
-Icahn School of Medicine at Mount Sinai, where I work on machine learning, AI, and
-high-performance scientific computing for electrophysiology, molecular neurobiology, and animal behavior quantification.
+Most recently I was a data scientist in the Neuroscience Department at the Icahn School of
+Medicine at Mount Sinai, where I worked on machine learning, AI, and high-performance
+scientific computing for electrophysiology, molecular neurobiology, and animal behavior
+quantification, and built foundation models for genomic DNA sequences.
 
-Also, check out my writing on Substack at [Future and Ever](https://futureandever.substack.com).
-
-## Previous
-
-Previously I was a master's student in the CUNY Graduate Center's Department of
+Before that, I was a master's student in the CUNY Graduate Center's Department of
 Computer Science, where I worked as a graduate research assistant in the
 [Hunter College Distributed AI Lab](https://anraja.commons.gc.cuny.edu/research-distributed-artificial-intelligence-research-dair-lab/), under the supervision of Professor Anita Raja. I developed machine learning
 and data mining methods for clinical applications, with a focus on AI for sequential
@@ -28,6 +25,8 @@ As an undergraduate at Stony Brook University, I majored in applied math & stati
 and philosophy, with research focuses on formal methods in metaphilosophy, philosophy
 of physics, and mathematical logic. My undergraduate research in philosophy was
 supervised by [Professor Gary Mar](https://en.wikipedia.org/wiki/Gary_R._Mar).
+
+I also write on Substack at [Future and Ever](https://futureandever.substack.com).
 
 ## Personal
 

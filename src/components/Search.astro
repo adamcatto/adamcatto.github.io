@@ -1,32 +1,33 @@
 ---
 // Search component using Pagefind
+import { url } from "../lib/paths";
 ---
 
 <div class="search-container">
   <button
     id="search-button"
-    class="flex items-center gap-2 px-2.5 sm:px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+    class="flex items-center gap-2.5 h-10 px-3 text-sm text-gray-500 hover:text-gray-900 bg-gray-50 border border-gray-300 rounded-[10px] hover:border-gray-400 transition-colors"
     aria-label="Search"
   >
     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
     </svg>
     <span class="hidden sm:inline">Search</span>
-    <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs font-mono bg-gray-100 text-gray-600 rounded">⌘K</kbd>
+    <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[11px] font-mono bg-gray-100 text-gray-600 border border-gray-300 rounded-[5px]">⌘K</kbd>
   </button>
 
   <dialog
     id="search-modal"
     class="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 border-none bg-transparent w-[calc(100vw-2rem)] sm:w-[80vw] max-w-3xl"
   >
-    <div class="mt-[10vh] bg-white rounded-lg overflow-hidden shadow-2xl">
+    <div class="mt-[10vh] bg-white border border-gray-300 rounded-2xl overflow-hidden shadow-2xl">
       <!-- Search Input Area -->
       <div class="px-6 py-4 border-b border-gray-200">
         <div class="flex items-center gap-3">
           <svg class="w-6 h-6 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
-          <div id="pagefind-search" class="flex-1"></div>
+          <div id="pagefind-search" class="flex-1" data-base={url("/")}></div>
           <button
             id="close-search"
             class="text-gray-400 hover:text-gray-600 flex-shrink-0"
@@ -142,8 +143,21 @@
     width: 100%;
   }
 
+  #pagefind-search {
+    --pagefind-ui-primary: var(--accent);
+    --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--border-strong);
+    --pagefind-ui-tag: var(--surface-2);
+    --pagefind-ui-font: var(--font-sans);
+  }
+
+  #pagefind-search :global(.pagefind-ui__search-input) {
+    color: var(--text);
+  }
+
   #pagefind-search :global(.pagefind-ui__search-input::placeholder) {
-    color: #9ca3af;
+    color: var(--faint);
   }
 
   #pagefind-search :global(.pagefind-ui__search-input:focus) {
@@ -164,7 +178,7 @@
 
   #pagefind-search :global(.pagefind-ui__result) {
     border: none;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border);
     padding: 1rem 0;
   }
 
@@ -175,18 +189,18 @@
   #pagefind-search :global(.pagefind-ui__result-title) {
     font-size: 1rem;
     font-weight: 500;
-    color: #111827;
+    color: var(--text);
   }
 
   #pagefind-search :global(.pagefind-ui__result-excerpt) {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--muted);
     margin-top: 0.25rem;
   }
 
   #pagefind-search :global(mark) {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
   }
@@ -217,6 +231,9 @@
         showSubResults: true,
         excerptLength: 20,
         resetStyles: false,
+        // Index URLs are relative to the build root; prefix them when built under a sub-path.
+        bundlePath: `${pagefindContainer.dataset.base}pagefind/`,
+        baseUrl: pagefindContainer.dataset.base,
       });
     }
   }

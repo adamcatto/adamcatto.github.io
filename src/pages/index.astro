@@ -1,17 +1,255 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEntry, render } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
+import { getShowcaseSlug } from "../lib/showcase";
+import { url } from "../lib/paths";
+import { getBookshelf } from "../lib/goodreads";
 
 const page = await getEntry("pages", "about");
 if (!page) {
   throw new Error("About page not found in content/pages/about.md");
 }
 const { Content } = await render(page);
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => (b.data.priority ?? 0) - (a.data.priority ?? 0))
+  .slice(0, 4);
+
+const publications = (await getCollection("publications"))
+  .sort((a, b) => b.data.year - a.data.year || (b.data.citations ?? 0) - (a.data.citations ?? 0))
+  .slice(0, 4);
+
+const now = [
+  { label: "Next", value: "Agents & trustworthy AI, BNY AI Hub" },
+  { label: "Focus", value: "Long-horizon agents & scalable RL environments" },
+  { label: "Previously", value: "Data scientist, Neuroscience, Mount Sinai", muted: true },
+];
+
+const focus = [
+  {
+    title: "Long-horizon agents",
+    body: "Agents that carry work through over long horizons and keep learning as they go: continual learning, memory, and adaptation without forgetting.",
+  },
+  {
+    title: "Scalable RL environments",
+    body: "Creating training environments for agents at scale: diverse, verifiable, and open-ended, plus semi-verifiable domains and the algorithms that learn from them.",
+  },
+  {
+    title: "Benchmarks & evals",
+    body: "Measuring what agents can actually do, with evaluations that hold up over long horizons and resist saturation.",
+  },
+  {
+    title: "Trustworthy AI",
+    body: "Making agent behavior reliable, legible, and safe to deploy where the stakes are high.",
+  },
+  {
+    title: "Alignment & governance",
+    body: "Keeping capable systems aligned with what people intend, and the policy and institutions to govern them.",
+  },
+  {
+    title: "Frontier directions",
+    body: "Research paths toward AGI and ASI, and what it takes to get there well.",
+  },
+];
+
+const exploring = [
+  {
+    group: "AI & AGI",
+    items: [
+      {
+        title: "Meta-RL and open-ended adaptation",
+        body: "Agents that make sense of loosely specified environments, work out what they need to learn, and ask questions when they should.",
+      },
+    ],
+  },
+  {
+    group: "Biology & neuroengineering",
+    items: [
+      { title: "Regenerative biology, especially neural regeneration" },
+      { title: "BCI and neuromechatronics" },
+      { title: "Synthetic and engineering biology" },
+    ],
+  },
+  {
+    group: "Philosophy",
+    items: [
+      { title: "Philosophy of AI, engineering, and neuroscience" },
+      { title: "Computational methods in philosophy" },
+      { title: "Philosophy of physics, computational metaphysics, and more speculative approaches" },
+      { title: "Aristotle and Olaf Stapledon" },
+    ],
+  },
+];
+
+const reading = getBookshelf().active[0];
+
+const letters = "ABCDEF";
 ---
 
-<BaseLayout title={page.data.title} description={page.data.description}>
-  <article class="prose">
-    <h1>{page.data.title}</h1>
-    <Content />
-  </article>
+<BaseLayout title="About" description={page.data.description}>
+  <!-- Hero -->
+  <section class="flex flex-wrap items-end gap-x-16 gap-y-12 pb-16 border-b border-gray-200">
+    <div class="flex-[1.4_1_520px] min-w-0">
+      <p class="eyebrow">Agents · Trustworthy AI · New York</p>
+      <h1 class="mt-6 text-[clamp(40px,5.6vw,72px)] leading-[1.02] tracking-[-0.045em] font-medium text-gray-950 max-w-[14ch]">
+        Building agents worth trusting, and the worlds that teach them.
+      </h1>
+      <p class="mt-7 max-w-[600px] text-lg leading-relaxed text-gray-600">
+        I'm joining the AI Hub at BNY to work on agents and trustworthy AI. My research centers on
+        long-horizon agents, continual learning, scalable RL environment creation, evals, alignment,
+        and other frontier directions toward AGI and ASI. Before this, I was a data scientist in Neuroscience at Mount
+        Sinai, building ML for electrophysiology, molecular neurobiology, and animal behavior, and
+        foundation models for genomic DNA sequences.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href={url("/research")} class="btn btn-accent">
+          Read about my research <span aria-hidden="true">→</span>
+        </a>
+        <a href={url("/tech-resume.pdf")} class="btn btn-ghost" target="_blank">Download CV</a>
+      </div>
+    </div>
+
+    <aside class="card flex-[1_1_320px] min-w-0 p-6" aria-labelledby="now-heading">
+      <h2 id="now-heading" class="mono flex items-center gap-2.5 text-xs uppercase tracking-[0.12em] text-gray-500">
+        <span aria-hidden="true" class="relative flex w-2 h-2">
+          <span class="absolute inset-0 rounded-full bg-[var(--accent)] opacity-60 animate-ping"></span>
+          <span class="relative w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+        </span>
+        Now
+      </h2>
+      <dl class="mt-4">
+        {now.map((row) => (
+          <div class="flex gap-4 py-3.5 border-b border-gray-100">
+            <dt class="mono w-24 shrink-0 pt-0.5 text-xs uppercase tracking-[0.08em] text-gray-400">{row.label}</dt>
+            <dd class:list={["text-[15px] leading-normal", row.muted ? "text-gray-500" : "text-gray-900"]}>{row.value}</dd>
+          </div>
+        ))}
+        <div class:list={["flex gap-4 py-3.5", reading && "border-b border-gray-100"]}>
+          <dt class="mono w-24 shrink-0 pt-0.5 text-xs uppercase tracking-[0.08em] text-gray-400">Writing</dt>
+          <dd class="text-[15px] leading-normal">
+            <a href="https://futureandever.substack.com" class="text-gray-900 hover:text-white" target="_blank" rel="noopener">
+              Future and Ever <span class="text-gray-400">on Substack ↗</span>
+            </a>
+          </dd>
+        </div>
+        {reading && (
+          <div class="flex gap-4 pt-3.5">
+            <dt class="mono w-24 shrink-0 pt-0.5 text-xs uppercase tracking-[0.08em] text-gray-400">Reading</dt>
+            <dd class="text-[15px] leading-normal">
+              <a href={url("/bookshelf")} class="text-gray-900 hover:text-white">
+                {reading.title}, <span class="text-gray-500">{reading.author}</span>
+                <span class="text-gray-400"> · Bookshelf →</span>
+              </a>
+            </dd>
+          </div>
+        )}
+      </dl>
+    </aside>
+  </section>
+
+  <!-- 01 Research focus -->
+  <section class="mt-24" aria-labelledby="focus">
+    <div class="section-head">
+      <h2 id="focus"><span class="num">01</span>Research focus</h2>
+      <a href={url("/research")} class="muted-link text-sm">Research <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+      {focus.map((item, i) => (
+        <article class="card p-6">
+          <span class="mono text-xs text-[var(--accent)]">{letters[i]}</span>
+          <h3 class="mt-7 text-xl font-medium tracking-[-0.02em] text-gray-900">{item.title}</h3>
+          <p class="mt-2.5 text-sm leading-relaxed text-gray-500">{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 02 Also exploring -->
+  <section class="mt-24" aria-labelledby="exploring">
+    <div class="section-head">
+      <h2 id="exploring"><span class="num">02</span>Also exploring</h2>
+      <span class="mono text-xs text-gray-400">Secondary interests</span>
+    </div>
+    <div class="mt-8 grid gap-x-12 gap-y-10 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+      {exploring.map((col) => (
+        <div>
+          <h3 class="mono text-xs uppercase tracking-[0.12em] text-gray-500">{col.group}</h3>
+          <ul class="mt-3">
+            {col.items.map((item) => (
+              <li class="py-3.5 border-b border-gray-100">
+                <span class="text-[15px] text-gray-900">{item.title}</span>
+                {item.body && <p class="mt-2 text-sm leading-relaxed text-gray-500">{item.body}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 03 Selected projects -->
+  <section class="mt-24" aria-labelledby="projects">
+    <div class="section-head">
+      <h2 id="projects"><span class="num">03</span>Selected projects</h2>
+      <a href={url("/projects")} class="muted-link text-sm">All projects <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))]">
+      {projects.map((project, i) => (
+        <a href={url(`/projects/${getShowcaseSlug(project.id)}`)} class="card row flex flex-col p-6">
+          <div class="flex items-center justify-between gap-4">
+            <span class="mono text-xs text-gray-400">P/{String(i + 1).padStart(2, "0")}</span>
+            <span aria-hidden="true" class="text-gray-400">↗</span>
+          </div>
+          <h3 class="row-title mt-6 text-xl font-medium tracking-[-0.02em] text-gray-900">{project.data.title}</h3>
+          {project.data.description && (
+            <p class="mt-2.5 text-sm leading-relaxed text-gray-500">{project.data.description}</p>
+          )}
+          <ul class="mt-auto pt-5 flex flex-wrap gap-2">
+            {project.data.tags.slice(0, 4).map((tag) => (
+              <li class="mono text-[11px] text-gray-600 bg-gray-100 border border-gray-300 rounded-md px-2 py-1">{tag}</li>
+            ))}
+          </ul>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 04 Recent publications -->
+  <section class="mt-24" aria-labelledby="pubs">
+    <div class="section-head">
+      <h2 id="pubs"><span class="num">04</span>Recent publications</h2>
+      <a href={url("/publications")} class="muted-link text-sm">All publications <span aria-hidden="true">→</span></a>
+    </div>
+    <ul>
+      {publications.map((pub) => (
+        <li>
+          <a
+            href={pub.data.url ?? url("/publications")}
+            class="row grid gap-x-8 gap-y-1 py-5 border-b border-gray-100 [grid-template-columns:64px_minmax(0,1fr)] md:[grid-template-columns:64px_minmax(0,1fr)_minmax(0,240px)]"
+          >
+            <span class="mono pt-0.5 text-[13px] text-gray-400">{pub.data.year}</span>
+            <span class="row-title text-base leading-snug text-gray-900">{pub.data.title}</span>
+            <span class="col-start-2 md:col-start-3 text-sm text-gray-500 md:text-right">{pub.data.venue}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- 05 About -->
+  <section class="mt-24" aria-labelledby="about">
+    <div class="section-head">
+      <h2 id="about"><span class="num">05</span>About</h2>
+    </div>
+    <article class="prose about-prose mt-2">
+      <Content />
+    </article>
+  </section>
 </BaseLayout>
+
+<style>
+  /* The About section already has a section header; drop the first rule above the markdown */
+  .about-prose :global(h2:first-child) {
+    border-top: 0;
+  }
+</style>

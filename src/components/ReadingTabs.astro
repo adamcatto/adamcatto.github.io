@@ -1,0 +1,28 @@
+---
+import { url } from "../lib/paths";
+
+interface Props {
+  current: "bookshelf" | "reading";
+}
+
+const { current } = Astro.props;
+const tabs = [
+  { id: "bookshelf", href: url("/bookshelf"), label: "Bookshelf" },
+  { id: "reading", href: url("/reading"), label: "Reading log" },
+];
+---
+
+<nav aria-label="Reading" class="mb-12 flex gap-1 border-b border-gray-200">
+  {tabs.map((tab) => (
+    <a
+      href={tab.href}
+      aria-current={tab.id === current ? "page" : undefined}
+      class:list={[
+        "-mb-px px-1 mr-5 pb-3 text-sm border-b",
+        tab.id === current ? "border-[var(--accent)] text-gray-900" : "border-transparent text-gray-500 hover:text-gray-900",
+      ]}
+    >
+      {tab.label}
+    </a>
+  ))}
+</nav>

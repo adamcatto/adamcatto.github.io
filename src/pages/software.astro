@@ -1,4 +1,5 @@
 ---
+import { url } from "../lib/paths";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import MediaEmbed from "../components/MediaEmbed.astro";
 import { getCollection } from "astro:content";
@@ -26,7 +27,7 @@ const software = (await getCollection("software")).sort(
       <div class="grid gap-6 mt-8">
         {software.map((item) => {
           const slug = getShowcaseSlug(item.id);
-          const detailUrl = `/software/${slug}`;
+          const detailUrl = url(`/software/${slug}`);
           const links = getSoftwareLinks(item.data);
           const previewVideo = getPrimaryVideo(item.data);
           const resolvedPreviewVideo = previewVideo

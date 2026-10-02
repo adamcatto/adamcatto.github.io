@@ -1,4 +1,5 @@
 ---
+import { url } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
@@ -16,7 +17,7 @@ const fiction = (await getCollection("writing"))
     </p>
 
     <p class="not-prose">
-      <a href="/writing" class="text-sm text-blue-600 hover:text-blue-700">
+      <a href={url("/writing")} class="text-sm text-blue-600 hover:text-blue-700">
         &larr; View all writing
       </a>
     </p>
@@ -29,7 +30,7 @@ const fiction = (await getCollection("writing"))
       <div class="space-y-6 mt-8">
         {fiction.map((piece) => (
           <article class="border-l-2 border-purple-300 pl-4 hover:border-purple-500 transition-colors">
-            <a href={`/writing/${piece.id.replace(/\/index$/, "")}`} class="block group">
+            <a href={url(`/writing/${piece.id.replace(/\/index$/, "")}`)} class="block group">
               <h2 class="text-xl font-medium text-gray-900 group-hover:text-purple-600 mt-0 mb-1 transition-colors">
                 {piece.data.title}
               </h2>

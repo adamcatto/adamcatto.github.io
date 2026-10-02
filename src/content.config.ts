@@ -110,6 +110,23 @@ const apps = defineCollection({
     }),
 });
 
+// Reading log: one markdown file per entry, e.g. reading/2026-10-02-attention-is-all-you-need.md.
+// Add entries with `npm run log` or the "Reading log" issue form (see scripts/reading-log.mjs).
+export const readingKinds = ["chapter", "paper", "essay", "article", "other"] as const;
+
+const reading = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/reading" }),
+  schema: z.object({
+    // Stored as YYYY-MM-DD; YAML may hand us a Date, so normalize either way.
+    date: z.coerce.date().transform((d) => d.toISOString().slice(0, 10)),
+    kind: z.enum(readingKinds),
+    title: z.string(),
+    from: z.string().optional(), // the book, journal, or publication it's from
+    author: z.string().optional(),
+    url: z.string().url().optional(),
+  }),
+});
+
 // Pages: single markdown files for static pages like About, CV, Research, Contact
 const pages = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/pages" }),
@@ -119,4 +136,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { writing, publications, projects, software, apps, pages };
+export const collections = { writing, publications, projects, software, apps, reading, pages };

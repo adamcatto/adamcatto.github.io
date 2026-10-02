@@ -1,36 +1,41 @@
 ---
 import Search from "./Search.astro";
+import { url, stripBase } from "../lib/paths";
 
 interface Props {
   currentPath: string;
-  navLinks: { href: string; label: string }[];
+  navLinks: { href: string; label: string; also?: string[] }[];
 }
 
 const { currentPath, navLinks } = Astro.props;
 
-function isActive(href: string): boolean {
-  return currentPath === href || (href !== "/" && currentPath.startsWith(href));
+function matches(href: string): boolean {
+  const path = stripBase(currentPath).replace(/\/$/, "") || "/";
+  const route = stripBase(href);
+  return path === route || (route !== "/" && path.startsWith(route));
 }
+
+// A nav item is current on its own route and on any related routes it lists.
+const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(link.also ?? [])].some(matches);
 ---
 
-<header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-  <div class="site-nav py-3 lg:py-4">
-    <nav class="flex items-center justify-between gap-3" aria-label="Main">
-      <a href="/" class="text-lg lg:text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
+<header class="site-header sticky top-0 z-50 border-b border-gray-200">
+  <div class="site-shell py-3 lg:py-4">
+    <nav class="flex items-center justify-between gap-5" aria-label="Main">
+      <a href={url("/")} class="flex items-center gap-2.5 min-h-11 text-base font-semibold tracking-tight text-gray-900 whitespace-nowrap shrink-0">
+        <span aria-hidden="true" class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
         Adam Catto
       </a>
 
       <!-- Desktop navigation -->
-      <div class="hidden lg:flex items-center gap-4 min-w-0">
-        <ul class="flex items-center gap-4 text-sm">
+      <div class="hidden lg:flex items-center gap-6 min-w-0">
+        <ul class="flex items-center gap-5 text-sm">
           {navLinks.map((link) => (
             <li>
               <a
                 href={link.href}
-                class:list={[
-                  "hover:text-gray-900 transition-colors",
-                  isActive(link.href) ? "text-gray-900 font-medium" : "text-gray-500",
-                ]}
+                aria-current={isActive(link) ? "page" : undefined}
+                class:list={["hover:text-gray-900", isActive(link) ? "text-gray-900" : "text-gray-500"]}
               >
                 {link.label}
               </a>
@@ -46,16 +51,16 @@ function isActive(href: string): boolean {
         <button
           type="button"
           id="mobile-menu-button"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+          class="inline-flex items-center justify-center w-11 h-11 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
           aria-controls="mobile-menu-panel"
           aria-expanded="false"
           aria-label="Open menu"
         >
           <svg class="w-6 h-6 menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 7h16M4 12h16M4 17h16" />
           </svg>
           <svg class="w-6 h-6 menu-icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -63,17 +68,18 @@ function isActive(href: string): boolean {
   </div>
 
   <!-- Mobile menu panel -->
-  <div id="mobile-menu-panel" class="mobile-menu hidden lg:hidden border-t border-gray-100 bg-white">
-    <div class="site-nav py-3">
+  <div id="mobile-menu-panel" class="mobile-menu hidden lg:hidden border-t border-gray-200">
+    <div class="site-shell py-3">
       <ul class="flex flex-col gap-1 text-base">
         {navLinks.map((link) => (
           <li>
             <a
               href={link.href}
+              aria-current={isActive(link) ? "page" : undefined}
               class:list={[
-                "block rounded-md px-3 py-2.5 transition-colors",
-                isActive(link.href)
-                  ? "bg-gray-100 text-gray-900 font-medium"
+                "block rounded-lg px-3 py-3 transition-colors",
+                isActive(link)
+                  ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
               ]}
             >
@@ -85,6 +91,14 @@ function isActive(href: string): boolean {
     </div>
   </div>
 </header>
+
+<style>
+  .site-header {
+    background: rgb(10 11 13 / 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+</style>
 
 <script>
   const menuButton = document.getElementById("mobile-menu-button");

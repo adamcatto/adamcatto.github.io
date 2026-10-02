@@ -1,4 +1,5 @@
 ---
+import { url } from "../../lib/paths";
 import ShowcaseLayout from "../../layouts/ShowcaseLayout.astro";
 import { getCollection, render } from "astro:content";
 import { resolveProjectVideos } from "../../lib/contentVideos";
@@ -27,7 +28,7 @@ const videos = resolveProjectVideos(slug, project.data.videos ?? []);
   video={project.data.video}
   videos={videos}
   links={links}
-  backHref="/projects"
+  backHref={url("/projects")}
   backLabel="Back to Projects"
 >
   <Content />

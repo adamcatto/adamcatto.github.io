@@ -3,19 +3,6 @@ title: "Curriculum Vitae"
 description: "My education, work experience, and skills"
 ---
 
-<div class="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-  <a
-    href="/tech-resume.pdf"
-    class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
-    target="_blank"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-    Download Resume (PDF)
-  </a>
-</div>
-
 ## Education
 
 - **M.S. in Data Science**, CUNY Graduate Center, 2022
@@ -30,7 +17,8 @@ Icahn School of Medicine at Mount Sinai
 *June 2022 – Present*
 
 Machine learning and AI for medical imaging, omics data analysis, electrophysiology,
-genomics, and automation of behavioral experiments.
+genomics, and automation of behavioral experiments. Foundation models for genomic DNA
+sequences.
 
 ### Graduate Research Assistant
 

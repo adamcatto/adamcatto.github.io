@@ -3,7 +3,7 @@ title: "AI-Neuroscientist"
 description: "An autonomous research agent that plans and executes bioinformatics analyses on spatial and single-cell transcriptomics data, writing and running its own notebook code against a live kernel."
 github: "https://github.com/adamcatto/AI-Neuroscientist"
 tags: ["LLM", "agent", "bioinformatics", "single-cell", "spatial-transcriptomics", "scanpy", "Ollama"]
-priority: 15
+priority: 21
 ---
 
 AI-Neuroscientist is an experimental autonomous research agent for bioinformatics. Given a high-level research objective and a folder of `.h5ad` data files, the agent plans and executes a full analysis of spatial and single-cell transcriptomics data—decomposing the objective into ordered subtasks, generating markdown explanations and executable code cells, running those cells against a live IPython kernel, self-correcting on errors, and persisting all outputs to a Jupyter notebook.
