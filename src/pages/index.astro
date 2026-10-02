@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection, getEntry, render } from "astro:content";
 import { getShowcaseSlug } from "../lib/showcase";
 import { url } from "../lib/paths";
+import { getBookshelf } from "../lib/goodreads";
 
 const page = await getEntry("pages", "about");
 if (!page) {
@@ -72,6 +73,8 @@ const exploring = [
   },
 ];
 
+const reading = (await getBookshelf()).active[0];
+
 const letters = "ABCD";
 ---
 
@@ -112,7 +115,7 @@ const letters = "ABCD";
             <dd class:list={["text-[15px] leading-normal", row.muted ? "text-gray-500" : "text-gray-900"]}>{row.value}</dd>
           </div>
         ))}
-        <div class="flex gap-4 py-3.5">
+        <div class:list={["flex gap-4 py-3.5", reading && "border-b border-gray-100"]}>
           <dt class="mono w-24 shrink-0 pt-0.5 text-xs uppercase tracking-[0.08em] text-gray-400">Writing</dt>
           <dd class="text-[15px] leading-normal">
             <a href="https://futureandever.substack.com" class="text-gray-900 hover:text-white" target="_blank" rel="noopener">
@@ -120,6 +123,17 @@ const letters = "ABCD";
             </a>
           </dd>
         </div>
+        {reading && (
+          <div class="flex gap-4 pt-3.5">
+            <dt class="mono w-24 shrink-0 pt-0.5 text-xs uppercase tracking-[0.08em] text-gray-400">Reading</dt>
+            <dd class="text-[15px] leading-normal">
+              <a href={url("/bookshelf")} class="text-gray-900 hover:text-white">
+                {reading.title}, <span class="text-gray-500">{reading.author}</span>
+                <span class="text-gray-400"> · Bookshelf →</span>
+              </a>
+            </dd>
+          </div>
+        )}
       </dl>
     </aside>
   </section>

@@ -1,0 +1,218 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { goodreadsProfile } from "../data/bookshelf";
+import { formatMonthDay, formatMonthYear, getBookshelf } from "../lib/goodreads";
+
+const shelf = await getBookshelf();
+
+// Show the two most recent years in full; the rest of the history lives on Goodreads.
+const YEARS_SHOWN = 2;
+const ROWS_BEFORE_TOGGLE = 6;
+const years = [...new Set(shelf.read.flatMap((b) => (b.readAt ? [b.readAt.year] : [])))]
+  .sort((a, b) => b - a)
+  .slice(0, YEARS_SHOWN)
+  .map((year) => ({ year, books: shelf.read.filter((b) => b.readAt?.year === year) }));
+const shownCount = years.reduce((n, y) => n + y.books.length, 0);
+const earlierCount = shelf.read.length - shownCount;
+const readingCount = shelf.active.length + shelf.passive.length;
+---
+
+<BaseLayout title="Bookshelf" description="What Adam Catto is reading, has read, and plans to read next.">
+  <section class="flex flex-wrap items-end justify-between gap-8 pb-12 border-b border-gray-200">
+    <div class="flex-[1_1_520px] min-w-0">
+      <p class="eyebrow">Bookshelf</p>
+      <h1 class="mt-6 text-[clamp(40px,5vw,60px)] leading-[1.04] tracking-[-0.04em] font-medium text-gray-950">What I'm reading.</h1>
+      <p class="mt-5 max-w-[560px] text-[17px] leading-relaxed text-gray-600">
+        What I've finished, what's open right now, and a short list of what's next.
+      </p>
+      <a href={goodreadsProfile} class="muted-link mono mt-5 inline-flex items-center gap-2 min-h-11 text-xs tracking-[0.06em]" target="_blank" rel="noopener">
+        <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+        Synced from Goodreads <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <dl class="flex gap-10">
+      {[
+        ["Read", shelf.read.length],
+        ["Reading", readingCount],
+        ["To read", shelf.toRead.length],
+      ].map(([label, value]) => (
+        <div>
+          <dt class="mono text-[11px] uppercase tracking-[0.12em] text-gray-400">{label}</dt>
+          <dd class="mt-2 text-[32px] font-medium tracking-[-0.03em] text-gray-900">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-14 flex flex-wrap items-start gap-16">
+    <!-- Read -->
+    <section aria-labelledby="read" class="flex-[1.15_1_480px] min-w-0">
+      <div class="flex items-baseline justify-between gap-4 mb-2">
+        <h2 id="read" class="text-[22px] font-medium tracking-[-0.02em] text-gray-900">Read</h2>
+        <span class="mono text-xs text-gray-400">{shelf.read.length} books</span>
+      </div>
+
+      {years.map(({ year, books }) => (
+        <div class="read-year mt-7">
+          <h3 class="mono flex justify-between mb-1 text-xs font-medium tracking-[0.12em] text-[var(--accent)]">
+            {year}
+            <span class="font-normal tracking-[0.02em] text-gray-400">{books.length} books</span>
+          </h3>
+          <ul id={`read-${year}`}>
+            {books.map((book, i) => (
+              <li data-extra={i >= ROWS_BEFORE_TOGGLE ? "" : undefined}>
+                <a href={book.url} class="row flex items-center gap-4 py-3 border-b border-gray-100" target="_blank" rel="noopener">
+                  <img src={book.cover} alt="" width="30" height="44" loading="lazy" class="cover w-[30px] h-11" />
+                  <div class="flex-1 min-w-0">
+                    <div class="row-title truncate text-[15px] font-medium text-gray-900" title={book.fullTitle}>{book.title}</div>
+                    <div class="mt-0.5 text-[13px] text-gray-500">{book.author}</div>
+                  </div>
+                  {book.rating > 0 ? (
+                    <span class="text-[11px] tracking-[1px] whitespace-nowrap" aria-label={`Rated ${book.rating} of 5`}>
+                      <span class="text-[var(--accent)]">{"★".repeat(book.rating)}</span><span class="text-gray-300">{"★".repeat(5 - book.rating)}</span>
+                    </span>
+                  ) : (
+                    <span class="sr-only">Not rated</span>
+                  )}
+                  <span class="mono w-[52px] text-right text-xs text-gray-400">{book.readAt && formatMonthDay(book.readAt)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          {books.length > ROWS_BEFORE_TOGGLE && (
+            <button
+              type="button"
+              class="year-toggle mono hidden mt-3.5 h-9 px-3.5 rounded-full border border-gray-300 text-xs text-gray-600 hover:text-gray-900 hover:border-gray-400"
+              aria-controls={`read-${year}`}
+              aria-expanded="false"
+              data-more={`Show all ${books.length}`}
+            >
+              Show all {books.length}
+            </button>
+          )}
+        </div>
+      ))}
+
+      {earlierCount > 0 && (
+        <a
+          href={`${goodreadsProfile.replace("/user/show/", "/review/list/")}?shelf=read`}
+          class="muted-link mt-8 flex items-center justify-between min-h-13 px-4.5 border border-dashed border-gray-300 rounded-xl text-sm"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>{earlierCount} earlier books on Goodreads</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
+    </section>
+
+    <div class="flex-[1_1_380px] min-w-0 flex flex-col gap-14">
+      <!-- Currently reading -->
+      <section aria-labelledby="current">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 id="current" class="text-[22px] font-medium tracking-[-0.02em] text-gray-900">Currently reading</h2>
+          <span class="mono text-xs text-gray-400">{readingCount} open</span>
+        </div>
+
+        <div class="mt-6">
+          <h3 class="mono flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.12em] text-gray-900">
+            <span aria-hidden="true" class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+            Active
+            <span class="font-normal normal-case tracking-[0.02em] text-gray-400">in steady rotation</span>
+          </h3>
+          <ul class="mt-3.5 flex flex-col gap-3">
+            {shelf.active.map((book) => (
+              <li>
+                <a href={book.url} class="card row flex gap-4.5 p-4" target="_blank" rel="noopener">
+                  <img src={book.cover} alt="" width="56" height="84" loading="lazy" class="cover w-14 h-21 rounded" />
+                  <div class="flex-1 min-w-0 flex flex-col">
+                    <span class="row-title text-[17px] font-medium tracking-[-0.01em] text-gray-900" title={book.fullTitle}>{book.title}</span>
+                    <span class="mt-0.5 text-sm text-gray-500">{book.author}</span>
+                    <div class="mono mt-auto pt-3 flex justify-between text-[11px] text-gray-400">
+                      <span>{book.pages && `${book.pages} pp`}</span>
+                      <span>{book.addedAt && `Since ${formatMonthYear(book.addedAt)}`}</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="mono flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.12em] text-gray-900">
+            <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full border border-gray-500"></span>
+            Passive
+            <span class="font-normal normal-case tracking-[0.02em] text-gray-400">picked up now and then</span>
+          </h3>
+          <ul class="mt-2">
+            {shelf.passive.map((book) => (
+              <li>
+                <a href={book.url} class="row flex items-center gap-4 py-3 border-b border-gray-100" target="_blank" rel="noopener">
+                  <img src={book.cover} alt="" width="30" height="44" loading="lazy" class="cover w-[30px] h-11 opacity-85" />
+                  <div class="flex-1 min-w-0">
+                    <div class="row-title truncate text-[15px] font-medium text-gray-900" title={book.fullTitle}>{book.title}</div>
+                    <div class="mt-0.5 text-[13px] text-gray-500">{book.author}</div>
+                  </div>
+                  <span class="mono whitespace-nowrap text-[11px] text-gray-400">{book.addedAt && `Since ${formatMonthYear(book.addedAt)}`}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- To read -->
+      <section aria-labelledby="queue">
+        <div class="flex items-baseline justify-between gap-4 pt-6 border-t border-gray-200">
+          <h2 id="queue" class="text-[22px] font-medium tracking-[-0.02em] text-gray-900">To read</h2>
+          <span class="mono text-xs text-gray-400">hand-picked</span>
+        </div>
+        <ol class="mt-3">
+          {shelf.toRead.map((book, i) => (
+            <li>
+              <a href={book.url ?? goodreadsProfile} class="row flex items-center gap-4 py-3 border-b border-gray-100" target="_blank" rel="noopener">
+                <span class="mono w-6 text-xs text-gray-400">{String(i + 1).padStart(2, "0")}</span>
+                {book.cover && <img src={book.cover} alt="" width="30" height="44" loading="lazy" class="cover w-[30px] h-11" />}
+                <div class="flex-1 min-w-0">
+                  <div class="row-title text-[15px] font-medium text-gray-900">{book.title}</div>
+                  <div class="mt-0.5 text-[13px] text-gray-500">{book.author}</div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .cover {
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 3px;
+    background: var(--surface-2);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
+  }
+
+  /* Long years collapse to their first few rows once the toggle script has run */
+  .read-year.collapsed [data-extra] {
+    display: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".read-year").forEach((year) => {
+    const toggle = year.querySelector<HTMLButtonElement>(".year-toggle");
+    if (!toggle) return;
+    year.classList.add("collapsed");
+    toggle.classList.remove("hidden");
+    toggle.classList.add("inline-flex", "items-center");
+    toggle.addEventListener("click", () => {
+      const collapsed = year.classList.toggle("collapsed");
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      toggle.textContent = collapsed ? toggle.dataset.more ?? "Show all" : "Show fewer";
+    });
+  });
+</script>
