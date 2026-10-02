@@ -4,7 +4,7 @@ description: "A demonstration of the math rendering and version history features
 date: 2026-01-20
 category: tutorials
 tags: ["meta", "math"]
-draft: false
+draft: true
 ---
 
 This essay demonstrates the LaTeX math rendering[^1] and version history features.

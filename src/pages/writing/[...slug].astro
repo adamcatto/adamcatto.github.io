@@ -6,7 +6,8 @@ import { getCollection, render } from "astro:content";
 import { getFileCommitHistory } from "../../lib/github";
 
 export async function getStaticPaths() {
-  const writing = await getCollection("writing");
+  // Drafts stay in the repo (e.g. the LaTeX/MDX samples) but don't get pages.
+  const writing = await getCollection("writing", (piece) => !piece.data.draft);
   return writing.map((piece) => {
     const slug = piece.id.replace(/\/index$/, "");
     return {
