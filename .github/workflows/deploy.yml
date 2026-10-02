@@ -3,8 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
-  # Dispatched by the staging branch on push and by the content workflows
-  # (Goodreads sync, reading log), since only master may deploy to Pages.
+  # Dispatched by the content workflows (Goodreads sync, reading log): pushes
+  # made with GITHUB_TOKEN don't trigger other workflows.
   workflow_dispatch:
 
 permissions:
@@ -16,51 +16,19 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  # A work-in-progress branch published under a sub-path for preview, e.g.
-  # https://adamcatto.github.io/new-version/. Skipped if the branch doesn't exist.
-  STAGING_BRANCH: redesign
-  STAGING_PATH: new-version
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: master
-          path: site
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: site/package-lock.json
       - run: npm ci && npm run build
-        working-directory: site
-
-      - name: Check for staging branch
-        id: staging
-        working-directory: site
-        run: |
-          if git ls-remote --exit-code --heads origin "$STAGING_BRANCH" > /dev/null; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          fi
-      - uses: actions/checkout@v4
-        if: steps.staging.outputs.exists == 'true'
-        with:
-          ref: ${{ env.STAGING_BRANCH }}
-          path: staging
-      - name: Build staging under /${{ env.STAGING_PATH }}/
-        if: steps.staging.outputs.exists == 'true'
-        working-directory: staging
-        run: |
-          npm ci
-          SITE_BASE="/$STAGING_PATH" npm run build
-          cp -R dist "../site/dist/$STAGING_PATH"
-
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site/dist
+          path: dist
 
   deploy:
     needs: build
