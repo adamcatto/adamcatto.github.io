@@ -36,6 +36,7 @@ const fiction = (await getCollection("writing"))
               </h2>
               <time class="text-sm text-gray-500">
                 {piece.data.date.toLocaleDateString("en-US", {
+                  timeZone: "UTC",
                   year: "numeric",
                   month: "long",
                   day: "numeric",

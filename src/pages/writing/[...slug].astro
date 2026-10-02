@@ -40,6 +40,7 @@ const categoryColors: Record<string, string> = {
       <div class="flex items-center gap-4 text-sm text-gray-500">
         <time datetime={piece.data.date.toISOString()}>
           {piece.data.date.toLocaleDateString("en-US", {
+            timeZone: "UTC",
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -48,6 +49,7 @@ const categoryColors: Record<string, string> = {
         {piece.data.updated && (
           <span>
             Updated: {piece.data.updated.toLocaleDateString("en-US", {
+              timeZone: "UTC",
               year: "numeric",
               month: "long",
               day: "numeric",

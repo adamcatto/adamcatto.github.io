@@ -1,7 +1,7 @@
 ---
 title: "The Orchestration Layer for Video Foundation Models"
 description: "Sketching its building blocks: executor–advisor delegation, Video Skills, and domain environments for long-horizon video."
-date: 2026-04-14
+date: 2026-04-13
 category: essays
 tags: ["agents", "video", "orchestration", "computer vision"]
 ---

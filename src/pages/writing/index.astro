@@ -110,6 +110,7 @@ const categoryCounts = allWriting.reduce((acc, piece) => {
               </div>
               <time class="text-sm text-gray-500">
                 {piece.data.date.toLocaleDateString("en-US", {
+                  timeZone: "UTC",
                   year: "numeric",
                   month: "long",
                   day: "numeric",
