@@ -1,17 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { goodreadsProfile } from "../data/bookshelf";
-import { formatMonthDay, formatMonthYear, getBookshelf } from "../lib/goodreads";
+import { goodreadsProfile } from "../data/bookshelf.mjs";
+import { formatMonthDay, formatMonthYear, getBookshelf, yearOf } from "../lib/goodreads";
 
-const shelf = await getBookshelf();
+const shelf = getBookshelf();
 
 // Show the two most recent years in full; the rest of the history lives on Goodreads.
 const YEARS_SHOWN = 2;
 const ROWS_BEFORE_TOGGLE = 6;
-const years = [...new Set(shelf.read.flatMap((b) => (b.readAt ? [b.readAt.year] : [])))]
+const years = [...new Set(shelf.read.flatMap((b) => (b.readAt ? [yearOf(b.readAt)] : [])))]
   .sort((a, b) => b - a)
   .slice(0, YEARS_SHOWN)
-  .map((year) => ({ year, books: shelf.read.filter((b) => b.readAt?.year === year) }));
+  .map((year) => ({ year, books: shelf.read.filter((b) => b.readAt && yearOf(b.readAt) === year) }));
 const shownCount = years.reduce((n, y) => n + y.books.length, 0);
 const earlierCount = shelf.read.length - shownCount;
 const readingCount = shelf.active.length + shelf.passive.length;
