@@ -287,6 +287,20 @@ a {
     text-decoration-color: var(--accent);
   }
 
+  /* Cards on listing pages sit inside .prose; keep their titles plain */
+  .prose article :is(h2, h3) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .prose a.block,
+  .prose .not-prose a,
+  .prose article h2 a,
+  .prose article h3 a {
+    text-decoration: none;
+  }
+
   /* rehype-autolink-headings wraps headings in anchors */
   .prose :is(h1, h2, h3, h4) a {
     color: inherit;
