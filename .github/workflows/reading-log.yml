@@ -1,0 +1,79 @@
+name: Add reading-log entry
+
+# Turns a "Reading log" issue (.github/ISSUE_TEMPLATE/reading-log.yml) into an entry in
+# src/content/reading, deploys, and closes the issue. Only the repo owner's issues count.
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+# Shared with the Goodreads sync so content commits never race each other.
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+env:
+  # The branch that has the reading log. Switch to master (and the URL to the root)
+  # once the redesign launches.
+  CONTENT_BRANCH: redesign
+  LOG_URL: https://adamcatto.github.io/new-version/reading/
+
+jobs:
+  add-entry:
+    if: >-
+      contains(github.event.issue.labels.*.name, 'reading-log') &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CONTENT_BRANCH }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Write the entry
+        id: entry
+        # The issue body goes through an environment variable, never into the script itself.
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          TZ: America/New_York
+        run: node scripts/reading-log.mjs --from-issue
+
+      - name: Commit, push, and deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FILE: ${{ steps.entry.outputs.file }}
+          TITLE: ${{ steps.entry.outputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$FILE"
+          git commit -m "Reading log: $TITLE"
+          git pull --rebase origin "$CONTENT_BRANCH"
+          git push origin "HEAD:$CONTENT_BRANCH"
+          # Pushes made with GITHUB_TOKEN don't trigger workflows, so ask for a deploy.
+          gh workflow run deploy.yml --ref master
+
+      - name: Close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FILE: ${{ steps.entry.outputs.file }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh issue close "$ISSUE" --repo "$GITHUB_REPOSITORY" \
+            --comment "Added \`$FILE\`. It'll show up at $LOG_URL in a minute or two."
+
+      - name: Report a problem
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" \
+            --body "Couldn't add this entry; see $RUN_URL for details. Close this one and open a new entry with the fix."
