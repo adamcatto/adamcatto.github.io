@@ -1,0 +1,36 @@
+name: Daily release
+
+# Cuts a GitHub release named for the day (YYYY-MM-DD, New York time) when master
+# has changed since the last one. Quiet days are skipped.
+on:
+  schedule:
+    - cron: '50 3 * * *' # 23:50 EDT / 22:50 EST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+      - name: Release today's changes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TZ: America/New_York
+        run: |
+          TODAY=$(date +%F)
+          if git rev-parse -q --verify "refs/tags/$TODAY" > /dev/null; then
+            echo "Already released $TODAY."
+            exit 0
+          fi
+          LAST=$(gh release list --limit 1 --json tagName --jq '.[0].tagName // empty')
+          if [ -n "$LAST" ] && [ "$(git rev-list --count "$LAST..HEAD")" -eq 0 ]; then
+            echo "Nothing new since $LAST."
+            exit 0
+          fi
+          gh release create "$TODAY" --target "$(git rev-parse HEAD)" --title "$TODAY" --generate-notes
