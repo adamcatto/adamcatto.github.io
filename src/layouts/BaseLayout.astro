@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Adam Catto - Data Scientist & Scientific Programmer" } = Astro.props;
+const { title, description = "Adam Catto: agents, trustworthy AI, and RL environments" } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
@@ -22,6 +22,13 @@ const navLinks = [
   { href: url("/cv"), label: "CV" },
   { href: url("/contact"), label: "Contact" },
 ];
+
+const elsewhere = [
+  { href: "https://github.com/adamcatto", label: "GitHub" },
+  { href: "https://scholar.google.com/citations?user=wuJLVSYAAAAJ", label: "Scholar" },
+  { href: "https://linkedin.com/in/adamcatto", label: "LinkedIn" },
+  { href: "https://futureandever.substack.com", label: "Substack" },
+];
 ---
 
 <!doctype html>
@@ -30,11 +37,12 @@ const navLinks = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#0A0B0D" />
     <link rel="icon" type="image/svg+xml" href={url("/favicon.svg")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
     />
     <link
@@ -51,28 +59,24 @@ const navLinks = [
   <body class="min-h-screen flex flex-col">
     <SiteHeader currentPath={currentPath} navLinks={navLinks} />
 
-    <main class="flex-1 py-8 lg:py-12">
-      <div class="site-content">
+    <main class="flex-1 pt-16 pb-24 lg:pt-20 lg:pb-32">
+      <div class="site-shell">
         <slot />
       </div>
     </main>
 
-    <footer class="border-t border-gray-200 mt-auto">
-      <div class="site-footer py-6 lg:py-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Adam Catto</p>
-          <div class="flex flex-wrap items-center gap-4">
-            <a href="https://github.com/adamcatto" class="hover:text-gray-900" target="_blank" rel="noopener">
-              GitHub
-            </a>
-            <a href="https://scholar.google.com/citations?user=YOUR_ID" class="hover:text-gray-900" target="_blank" rel="noopener">
-              Scholar
-            </a>
-            <a href="https://linkedin.com/in/adamcatto" class="hover:text-gray-900" target="_blank" rel="noopener">
-              LinkedIn
-            </a>
-          </div>
+    <footer class="border-t border-gray-200">
+      <div class="site-shell flex flex-wrap items-center justify-between gap-6 pt-10 pb-14">
+        <div>
+          <p class="text-sm text-gray-900">&copy; {new Date().getFullYear()} Adam Catto</p>
+          <p class="mono mt-1.5 text-xs text-gray-400">Built with Astro · Hosted on GitHub Pages</p>
         </div>
+        <nav aria-label="Elsewhere" class="flex flex-wrap gap-6 text-sm">
+          {elsewhere.map((link) => (
+            <a href={link.href} class="muted-link" target="_blank" rel="noopener">{link.label}</a>
+          ))}
+          <a href="mailto:adam.catto@mssm.edu" class="muted-link">Email</a>
+        </nav>
       </div>
     </footer>
   </body>
