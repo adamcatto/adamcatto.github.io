@@ -5,8 +5,8 @@ description: "Long-horizon agents, scalable RL environments, evals, trustworthy 
 
 ## Current focus
 
-I'm joining the AI Hub at BNY to work on agents and trustworthy AI. The questions I care most
-about right now:
+I'm joining the AI Hub at BNY to work on agentic software engineering and trustworthy AI
+systems. The questions I care most about right now:
 
 ### Long-horizon agents & continual learning
 
