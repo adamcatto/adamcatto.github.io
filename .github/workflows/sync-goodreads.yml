@@ -1,0 +1,52 @@
+name: Sync Goodreads
+
+# Pulls the Goodreads shelves into src/data/goodreads.json and redeploys if anything
+# changed, so the site never has to reach Goodreads at build time.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+# Shared with the reading-log workflow so content commits never race each other.
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+env:
+  # The branch that has the bookshelf. Switch to master once the redesign launches.
+  CONTENT_BRANCH: redesign
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CONTENT_BRANCH }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run sync:goodreads
+
+      - name: Commit and deploy if the shelves changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add src/data/goodreads.json
+          if git diff --staged --quiet; then
+            echo "Bookshelf unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync Goodreads bookshelf"
+          git pull --rebase origin "$CONTENT_BRANCH"
+          git push origin "HEAD:$CONTENT_BRANCH"
+          # Pushes made with GITHUB_TOKEN don't trigger workflows, so ask for a deploy.
+          gh workflow run deploy.yml --ref master

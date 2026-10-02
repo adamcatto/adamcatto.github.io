@@ -3,10 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
-  # Daily rebuild so build-time data (e.g. the Goodreads bookshelf) stays fresh.
-  schedule:
-    - cron: '0 9 * * *'
-  # The staging branch dispatches this workflow on push (only master may deploy to Pages).
+  # Dispatched by the staging branch on push and by the content workflows
+  # (Goodreads sync, reading log), since only master may deploy to Pages.
   workflow_dispatch:
 
 permissions:
