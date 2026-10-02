@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # The branch that has the bookshelf. Switch to master once the redesign launches.
-  CONTENT_BRANCH: redesign
+  # The branch that has the site content.
+  CONTENT_BRANCH: master
 
 jobs:
   sync:

@@ -17,10 +17,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # The branch that has the reading log. Switch to master (and the URL to the root)
-  # once the redesign launches.
-  CONTENT_BRANCH: redesign
-  LOG_URL: https://adamcatto.github.io/new-version/reading/
+  # The branch that has the site content.
+  CONTENT_BRANCH: master
+  LOG_URL: https://adamcatto.github.io/reading/
 
 jobs:
   add-entry:
