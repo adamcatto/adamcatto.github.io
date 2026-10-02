@@ -1,0 +1,183 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ReadingTabs from "../components/ReadingTabs.astro";
+import { getCollection, render } from "astro:content";
+import { readingKinds } from "../content.config";
+
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const KIND_LABELS: Record<string, string> = {
+  chapter: "Chapter",
+  paper: "Paper",
+  essay: "Essay",
+  article: "Article",
+  other: "Other",
+};
+
+// Dates are plain YYYY-MM-DD strings; do the calendar math in UTC so nothing shifts.
+const asDate = (ymd: string) => new Date(`${ymd}T00:00:00Z`);
+const ymd = (date: Date) => date.toISOString().slice(0, 10);
+function weekStart(day: string): string {
+  const date = asDate(day);
+  date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7)); // back to Monday
+  return ymd(date);
+}
+const formatDay = (day: string) => {
+  const date = asDate(day);
+  return { weekday: DAYS[date.getUTCDay()], date: String(date.getUTCDate()).padStart(2, "0") };
+};
+const formatWeek = (monday: string) => {
+  const date = asDate(monday);
+  return `Week of ${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+};
+
+const entries = (await getCollection("reading")).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date) || b.id.localeCompare(a.id)
+);
+const rendered = await Promise.all(entries.map(async (entry) => ({ entry, ...(await render(entry)) })));
+
+// Group by week, then by day within the week.
+const weeks: { monday: string; days: { day: string; items: typeof rendered }[] }[] = [];
+for (const item of rendered) {
+  const monday = weekStart(item.entry.data.date);
+  let week = weeks.at(-1);
+  if (week?.monday !== monday) weeks.push((week = { monday, days: [] }));
+  let day = week.days.at(-1);
+  if (day?.day !== item.entry.data.date) week.days.push((day = { day: item.entry.data.date, items: [] }));
+  day.items.push(item);
+}
+
+const kindCounts = Object.fromEntries(
+  readingKinds.map((kind) => [kind, entries.filter((e) => e.data.kind === kind).length])
+);
+const kindsInUse = readingKinds.filter((kind) => kindCounts[kind] > 0);
+const latest = entries[0]?.data.date;
+---
+
+<BaseLayout title="Reading log" description="Chapters, papers, and essays I've been reading, logged as I go.">
+  <ReadingTabs current="reading" />
+
+  <section class="flex flex-wrap items-end justify-between gap-8 pb-12 border-b border-gray-200">
+    <div class="flex-[1_1_520px] min-w-0">
+      <p class="eyebrow">Reading log</p>
+      <h1 class="mt-6 text-[clamp(40px,5vw,60px)] leading-[1.04] tracking-[-0.04em] font-medium text-gray-950">Day by day.</h1>
+      <p class="mt-5 max-w-[560px] text-[17px] leading-relaxed text-gray-600">
+        Chapters, papers, and essays I've been reading, logged as I go, with the odd note on what stuck.
+      </p>
+    </div>
+    <dl class="flex gap-10">
+      <div>
+        <dt class="mono text-[11px] uppercase tracking-[0.12em] text-gray-400">Entries</dt>
+        <dd class="mt-2 text-[32px] font-medium tracking-[-0.03em] text-gray-900">{entries.length}</dd>
+      </div>
+      {latest && (
+        <div>
+          <dt class="mono text-[11px] uppercase tracking-[0.12em] text-gray-400">Last entry</dt>
+          <dd class="mt-2 text-[32px] font-medium tracking-[-0.03em] text-gray-900">
+            {MONTHS[asDate(latest).getUTCMonth()]} {asDate(latest).getUTCDate()}
+          </dd>
+        </div>
+      )}
+    </dl>
+  </section>
+
+  {entries.length === 0 ? (
+    <p class="mt-16 text-gray-500">Nothing logged yet. Check back soon.</p>
+  ) : (
+    <>
+      {kindsInUse.length > 1 && (
+        <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter by kind">
+          <button type="button" class="pill" data-kind="" aria-pressed="true">
+            All <span class="mono text-[11px] opacity-70">{entries.length}</span>
+          </button>
+          {kindsInUse.map((kind) => (
+            <button type="button" class="pill" data-kind={kind} aria-pressed="false">
+              {KIND_LABELS[kind]} <span class="mono text-[11px] opacity-70">{kindCounts[kind]}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {weeks.map((week) => (
+        <section class="log-week mt-14" aria-label={formatWeek(week.monday)}>
+          <h2 class="mono flex items-baseline justify-between gap-4 pb-4 border-b border-gray-200 text-xs font-medium uppercase tracking-[0.12em] text-[var(--accent)]">
+            {formatWeek(week.monday)}
+            <span class="font-normal normal-case tracking-[0.02em] text-gray-400">
+              {week.days.reduce((n, d) => n + d.items.length, 0)} read
+            </span>
+          </h2>
+          {week.days.map(({ day, items }) => (
+            <div class="log-day grid gap-x-8 py-6 border-b border-gray-100 [grid-template-columns:64px_minmax(0,1fr)]">
+              <div class="mono pt-1 text-gray-400">
+                <div class="text-[11px] uppercase tracking-[0.08em]">{formatDay(day).weekday}</div>
+                <div class="mt-1 text-xl text-gray-600">{formatDay(day).date}</div>
+              </div>
+              <ul class="flex flex-col gap-6">
+                {items.map(({ entry, Content }) => (
+                  <li class="log-entry" data-kind={entry.data.kind}>
+                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span class="mono text-[11px] uppercase tracking-[0.06em] text-gray-500">{KIND_LABELS[entry.data.kind]}</span>
+                      <h3 class="text-[17px] font-medium leading-snug tracking-[-0.01em] text-gray-900">
+                        {entry.data.url ? (
+                          <a href={entry.data.url} class="hover:text-white" target="_blank" rel="noopener">
+                            {entry.data.title} <span aria-hidden="true" class="text-gray-400">↗</span>
+                          </a>
+                        ) : (
+                          entry.data.title
+                        )}
+                      </h3>
+                    </div>
+                    {(entry.data.from || entry.data.author) && (
+                      <p class="mt-1 text-sm text-gray-500">
+                        {entry.data.from && <span class="italic">{entry.data.from}</span>}
+                        {entry.data.from && entry.data.author && " · "}
+                        {entry.data.author}
+                      </p>
+                    )}
+                    {entry.body?.trim() && (
+                      <div class="prose log-notes mt-3">
+                        <Content />
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ))}
+    </>
+  )}
+</BaseLayout>
+
+<style>
+  .log-notes {
+    font-size: 15px;
+    line-height: 1.65;
+    padding-left: 14px;
+    border-left: 1px solid var(--border-strong);
+  }
+
+  .log-notes :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>
+
+<script>
+  const pills = Array.from(document.querySelectorAll<HTMLButtonElement>(".pill[data-kind]"));
+  pills.forEach((pill) =>
+    pill.addEventListener("click", () => {
+      const kind = pill.dataset.kind ?? "";
+      pills.forEach((p) => p.setAttribute("aria-pressed", String(p === pill)));
+      document.querySelectorAll<HTMLElement>(".log-entry").forEach((entry) => {
+        entry.hidden = Boolean(kind) && entry.dataset.kind !== kind;
+      });
+      // Hide days and weeks left with nothing to show.
+      for (const selector of [".log-day", ".log-week"]) {
+        document.querySelectorAll<HTMLElement>(selector).forEach((group) => {
+          group.hidden = !group.querySelector(".log-entry:not([hidden])");
+        });
+      }
+    })
+  );
+</script>

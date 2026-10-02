@@ -4,16 +4,19 @@ import { url, stripBase } from "../lib/paths";
 
 interface Props {
   currentPath: string;
-  navLinks: { href: string; label: string }[];
+  navLinks: { href: string; label: string; also?: string[] }[];
 }
 
 const { currentPath, navLinks } = Astro.props;
 
-function isActive(href: string): boolean {
+function matches(href: string): boolean {
   const path = stripBase(currentPath).replace(/\/$/, "") || "/";
   const route = stripBase(href);
   return path === route || (route !== "/" && path.startsWith(route));
 }
+
+// A nav item is current on its own route and on any related routes it lists.
+const isActive = (link: { href: string; also?: string[] }) => [link.href, ...(link.also ?? [])].some(matches);
 ---
 
 <header class="site-header sticky top-0 z-50 border-b border-gray-200">
@@ -31,8 +34,8 @@ function isActive(href: string): boolean {
             <li>
               <a
                 href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                class:list={["hover:text-gray-900", isActive(link.href) ? "text-gray-900" : "text-gray-500"]}
+                aria-current={isActive(link) ? "page" : undefined}
+                class:list={["hover:text-gray-900", isActive(link) ? "text-gray-900" : "text-gray-500"]}
               >
                 {link.label}
               </a>
@@ -72,10 +75,10 @@ function isActive(href: string): boolean {
           <li>
             <a
               href={link.href}
-              aria-current={isActive(link.href) ? "page" : undefined}
+              aria-current={isActive(link) ? "page" : undefined}
               class:list={[
                 "block rounded-lg px-3 py-3 transition-colors",
-                isActive(link.href)
+                isActive(link)
                   ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
               ]}

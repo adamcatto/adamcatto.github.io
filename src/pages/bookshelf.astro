@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ReadingTabs from "../components/ReadingTabs.astro";
 import { goodreadsProfile } from "../data/bookshelf.mjs";
 import { formatMonthDay, formatMonthYear, getBookshelf, yearOf } from "../lib/goodreads";
 
@@ -17,7 +18,9 @@ const earlierCount = shelf.read.length - shownCount;
 const readingCount = shelf.active.length + shelf.passive.length;
 ---
 
-<BaseLayout title="Bookshelf" description="What Adam Catto is reading, has read, and plans to read next.">
+<BaseLayout title="Bookshelf" description="What I'm reading, what I've read, and what's next.">
+  <ReadingTabs current="bookshelf" />
+
   <section class="flex flex-wrap items-end justify-between gap-8 pb-12 border-b border-gray-200">
     <div class="flex-[1_1_520px] min-w-0">
       <p class="eyebrow">Bookshelf</p>
