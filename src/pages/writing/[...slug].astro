@@ -1,4 +1,5 @@
 ---
+import { url } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CommitHistory from "../../components/CommitHistory.astro";
 import { getCollection, render } from "astro:content";
@@ -73,7 +74,7 @@ const categoryColors: Record<string, string> = {
   </article>
 
   <nav class="mt-12 pt-6 border-t border-gray-200 not-prose">
-    <a href="/writing" class="text-sm text-gray-600 hover:text-gray-900">
+    <a href={url("/writing")} class="text-sm text-gray-600 hover:text-gray-900">
       &larr; Back to Writing
     </a>
   </nav>

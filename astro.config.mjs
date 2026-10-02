@@ -8,10 +8,16 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import pagefind from 'astro-pagefind';
 
+// Staging builds set SITE_BASE=/new-version; production builds at the root.
+const base = process.env.SITE_BASE || '';
+
 export default defineConfig({
   site: 'https://adamcatto.github.io',
+  base: base || '/',
   redirects: {
-    '/essays': '/writing',
+    // Static redirect destinations aren't base-prefixed by Astro, so do it here.
+    // (The dynamic one resolves against the route itself and must stay unprefixed.)
+    '/essays': `${base}/writing`,
     '/essays/[...slug]': '/writing/[...slug]',
   },
   integrations: [mdx(), pagefind()],

@@ -1,5 +1,6 @@
 ---
 import Search from "./Search.astro";
+import { url, stripBase } from "../lib/paths";
 
 interface Props {
   currentPath: string;
@@ -9,14 +10,16 @@ interface Props {
 const { currentPath, navLinks } = Astro.props;
 
 function isActive(href: string): boolean {
-  return currentPath === href || (href !== "/" && currentPath.startsWith(href));
+  const path = stripBase(currentPath);
+  const route = stripBase(href);
+  return path === route || (route !== "/" && path.startsWith(route));
 }
 ---
 
 <header class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
   <div class="site-nav py-3 lg:py-4">
     <nav class="flex items-center justify-between gap-3" aria-label="Main">
-      <a href="/" class="text-lg lg:text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
+      <a href={url("/")} class="text-lg lg:text-xl font-semibold text-gray-900 hover:text-gray-600 whitespace-nowrap shrink-0">
         Adam Catto
       </a>
 
