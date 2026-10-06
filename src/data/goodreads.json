@@ -1,6 +1,19 @@
 {
   "read": [
     {
+      "id": "9544",
+      "title": "Owning Your Own Shadow",
+      "fullTitle": "Owning Your Own Shadow: Understanding the Dark Side of the Psyche",
+      "author": "Robert A. Johnson",
+      "url": "https://www.goodreads.com/book/show/9544",
+      "cover": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1526881270l/9544.jpg",
+      "rating": 3,
+      "pages": 118,
+      "readAt": "2026-10-05",
+      "addedAt": "2026-10-05",
+      "shelves": []
+    },
+    {
       "id": "375802",
       "title": "Ender’s Game",
       "fullTitle": "Ender’s Game (Ender's Saga, #1)",
@@ -3483,20 +3496,6 @@
       "rating": 0,
       "pages": 280,
       "addedAt": "2026-10-02",
-      "shelves": [
-        "currently-reading"
-      ]
-    },
-    {
-      "id": "9544",
-      "title": "Owning Your Own Shadow",
-      "fullTitle": "Owning Your Own Shadow: Understanding the Dark Side of the Psyche",
-      "author": "Robert A. Johnson",
-      "url": "https://www.goodreads.com/book/show/9544",
-      "cover": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1526881270l/9544.jpg",
-      "rating": 0,
-      "pages": 118,
-      "addedAt": "2026-09-22",
       "shelves": [
         "currently-reading"
       ]
