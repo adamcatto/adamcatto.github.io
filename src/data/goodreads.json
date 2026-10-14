@@ -581,11 +581,14 @@
       "author": "Daniel Rose",
       "url": "https://www.goodreads.com/book/show/29588686",
       "cover": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1458651344l/29588686._SY240_.jpg",
-      "rating": 0,
+      "rating": 5,
       "pages": 384,
       "readAt": "2024-11-05",
-      "addedAt": "2024-11-05",
-      "shelves": []
+      "addedAt": "2026-10-14",
+      "shelves": [
+        "favorites",
+        "reference-life"
+      ]
     },
     {
       "id": "58480",
@@ -1930,10 +1933,11 @@
       "rating": 5,
       "pages": 228,
       "readAt": "2021-06-23",
-      "addedAt": "2021-11-14",
+      "addedAt": "2026-10-14",
       "shelves": [
         "favorites",
-        "books-i-often-come-back-to"
+        "books-i-often-come-back-to",
+        "reference-life"
       ]
     },
     {
